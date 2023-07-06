@@ -1,5 +1,5 @@
-#ifndef _tavlcom_h
-#define _tavlcom_h
+#ifndef TAVL_H
+#define TAVL_H
 #include <iostream>
 #include "tcomplejo.h"
 #include "tvectorcom.h"
@@ -7,7 +7,6 @@
 class TNodoAVL;
 class TAVLCom
 {
-    friend ostream &operator<<(ostream &, const TAVLCom &);
     friend class TNodoAVL;
 
 private:
@@ -17,8 +16,8 @@ private:
     void PostordenAux(TVectorCom &, int &) const;
 
     TComplejo BuscarNodo();
-    bool Insertar(const TComplejo &c, bool &crece);
-    bool Borrar(const TComplejo &tc, bool &i);
+    bool Insertar(const TComplejo &, bool &);
+    bool Borrar(const TComplejo &, bool &);
     void RotarDerecha();
     void RotarIzquierda();
     void RotarDobleDerecha();
@@ -42,8 +41,9 @@ public:
     TVectorCom Inorden() const;
     TVectorCom Preorden() const;
     TVectorCom Postorden() const;
-
     TVectorCom Niveles() const;
+
+    friend ostream &operator<<(ostream &, const TAVLCom &);
 };
 
 class TNodoAVL
@@ -57,7 +57,7 @@ private:
 
 public:
     TNodoAVL();
-    TNodoAVL(const TComplejo &c);
+    TNodoAVL(const TComplejo &);
     TNodoAVL(const TNodoAVL &);
     ~TNodoAVL();
     TNodoAVL &operator=(const TNodoAVL &);

@@ -1,7 +1,5 @@
 #include "tabbcom.h"
 
-/* Implementación de la clase TNodoABB */
-
 TNodoABB::TNodoABB() {}
 
 TNodoABB::TNodoABB(const TNodoABB &nodo) : item(nodo.item), iz(nodo.iz), de(nodo.de) {}

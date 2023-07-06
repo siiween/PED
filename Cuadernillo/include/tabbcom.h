@@ -19,28 +19,25 @@ private:
 
 public:
     TABBCom();
-    TABBCom(const TABBCom &abb);
+    TABBCom(const TABBCom &);
     ~TABBCom();
-    TABBCom &operator=(const TABBCom &abb);
-
-    bool operator==(const TABBCom &abb) const;
-
+    TABBCom &operator=(const TABBCom &);
+    bool operator==(const TABBCom &) const;
     bool EsVacio() const;
-    bool Insertar(TComplejo &com);
-    bool Borrar(TComplejo &com);
-    bool Buscar(TComplejo &com) const;
+    bool Insertar(TComplejo &);
+    bool Borrar(TComplejo &);
+    bool Buscar(TComplejo &) const;
     TComplejo Raiz() const;
     int Altura() const;
     int Nodos() const;
     int NodosHoja() const;
-
     TVectorCom Inorden() const;
     TVectorCom Preorden() const;
     TVectorCom Postorden() const;
     TVectorCom Niveles() const;
-    void NivelesAux(TVectorCom &v, int &posicion) const;
+    void NivelesAux(TVectorCom &, int &) const;
 
-    friend ostream &operator<<(ostream &os, const TABBCom &abb);
+    friend ostream &operator<<(ostream &, const TABBCom &);
 };
 
 class TNodoABB

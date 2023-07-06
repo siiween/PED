@@ -1,7 +1,3 @@
-//
-// Created by carlo on 12/06/2023.
-//
-
 #ifndef TCOMPLEJO_H
 #define TCOMPLEJO_H
 
@@ -11,51 +7,37 @@ using namespace std;
 class TComplejo
 {
 private:
-    double re; // PARTE REAL
-    double im; // PARTE IMAGINARIA
+    double re;
+    double im;
 
 public:
-    // Constructor por defecto : PARTE REAL e IMAGINARIA inicializadas a 0
     TComplejo();
-    // Constructor a partir de la PARTE REAL
-    TComplejo(double real);
-    // Constructor a partir de la PARTE REAL e IMAGINARIA
-    TComplejo(double real, double imag);
-    // Constructor copia
-    TComplejo(const TComplejo &tcom);
-    // Destructor
+    TComplejo(double);
+    TComplejo(double, double);
+    TComplejo(const TComplejo &);
     ~TComplejo();
-    // Sobrecarga del operador asignación
-    TComplejo &operator=(const TComplejo &other);
+    TComplejo &operator=(const TComplejo &);
+    TComplejo operator+(const TComplejo &) const;
+    TComplejo operator-(const TComplejo &) const;
+    TComplejo operator*(const TComplejo &) const;
+    TComplejo operator+(double) const;
+    TComplejo operator-(double) const;
+    TComplejo operator*(double) const;
+    bool operator==(const TComplejo &) const;
+    bool operator!=(const TComplejo &) const;
+    bool operator<(const TComplejo &) const;
+    bool operator>(const TComplejo &) const;
+    double Re() const;
+    double Im() const;
+    void Re(double);
+    void Im(double);
+    double Arg() const;
+    double Mod() const;
+    friend TComplejo operator+(double, const TComplejo &);
+    friend TComplejo operator-(double, const TComplejo &);
+    friend TComplejo operator*(double, const TComplejo &);
 
-    // SOBRECARGA DE OPERADORES ARITMÉTICOS;
-    TComplejo operator+(const TComplejo &tcom) const;
-    TComplejo operator-(const TComplejo &tcom) const;
-    TComplejo operator*(const TComplejo &tcom) const;
-    TComplejo operator+(double real) const;
-    TComplejo operator-(double real) const;
-    TComplejo operator*(double real) const;
-
-    // OTROS OPERADORES
-    bool operator==(const TComplejo &tcom) const; // IGUALDAD de números complejos
-    bool operator!=(const TComplejo &tcom) const;       // DESIGUALDAD de números complejos
-    bool operator<(const TComplejo &complejo) const;
-    bool operator>(const TComplejo &complejo) const;
-
-    double Re() const; // Devuelve PARTE REAL
-    double Im() const; // Devuelve PARTE IMAGINARIA
-
-    void Re(double real); // Modifica PARTE REAL
-    void Im(double imag); // Modifica PARTE IMAGINARIA
-
-    double Arg() const; // Calcula el Argumento (en Radianes)
-    double Mod() const; // Calcula el Módulo
-
-    // Sobrecarga del operador SALIDA
-    friend std::ostream &operator<<(std::ostream &os, const TComplejo &complejo);
-    friend TComplejo operator+(double real, const TComplejo &complejo);
-    friend TComplejo operator-(double real, const TComplejo &complejo);
-    friend TComplejo operator*(double real, const TComplejo &complejo);
+    friend std::ostream &operator<<(std::ostream &, const TComplejo &);
 };
 
-#endif // TCOMPLEJO_H
+#endif

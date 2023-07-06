@@ -1,5 +1,5 @@
-#ifndef TLISTACOM_H
-#define TLISTACOM_H
+#ifndef TLISTA_H
+#define TLISTA_H
 
 #include "tcomplejo.h"
 
@@ -80,4 +80,4 @@ public:
 
 ostream &operator<<(ostream &, TListaCom &);
 
-#endif /* TLISTACOM_H */
+#endif

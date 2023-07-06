@@ -1,17 +1,11 @@
-//
-// Created by carlo on 13/06/2023.
-//
-
 #include "tvectorcom.h"
 
-// Constructor por defecto
 TVectorCom::TVectorCom()
 {
     c = NULL;
     tamano = 0;
 }
 
-// Constructor a partir de un tamaño
 TVectorCom::TVectorCom(int size)
 {
     if (size <= 0)
@@ -26,7 +20,6 @@ TVectorCom::TVectorCom(int size)
     }
 }
 
-// Constructor de copia
 TVectorCom::TVectorCom(const TVectorCom &v)
 {
     tamano = v.tamano;
@@ -38,18 +31,16 @@ TVectorCom::TVectorCom(const TVectorCom &v)
     }
 }
 
-// Destructor
 TVectorCom::~TVectorCom()
 {
     if (c != nullptr)
     {
         delete[] c;
-        c = nullptr; // Establecer el puntero a nullptr después de liberar la memoria
-        tamano = 0;  // Establecer el tamaño a 0
+        c = nullptr;
+        tamano = 0;
     }
 }
 
-// Sobrecarga del operador de asignación
 TVectorCom &TVectorCom::operator=(const TVectorCom &v)
 {
     if (this != &v)
@@ -66,7 +57,6 @@ TVectorCom &TVectorCom::operator=(const TVectorCom &v)
     return *this;
 }
 
-// Sobrecarga del operador de igualdad
 bool TVectorCom::operator==(const TVectorCom &v) const
 {
 
@@ -83,13 +73,11 @@ bool TVectorCom::operator==(const TVectorCom &v) const
     return true;
 }
 
-// Sobrecarga del operador de desigualdad
 bool TVectorCom::operator!=(const TVectorCom &v) const
 {
     return !(*this == v);
 }
 
-// Sobrecarga del operador corchete (parte IZQUIERDA)
 TComplejo &TVectorCom::operator[](int pos)
 {
     static TComplejo error;
@@ -102,7 +90,6 @@ TComplejo &TVectorCom::operator[](int pos)
     return c[pos - 1];
 }
 
-// Sobrecarga del operador corchete (parte DERECHA)
 TComplejo TVectorCom::operator[](int pos) const
 {
     static TComplejo error;
@@ -115,13 +102,11 @@ TComplejo TVectorCom::operator[](int pos) const
     return c[pos - 1];
 }
 
-// Tamaño del vector (posiciones TOTALES)
 int TVectorCom::Tamano() const
 {
     return tamano;
 }
 
-// Cantidad de posiciones OCUPADAS (TComplejo NO VACIO) en el vector
 int TVectorCom::Ocupadas() const
 {
     int count = 0;
@@ -135,7 +120,6 @@ int TVectorCom::Ocupadas() const
     return count;
 }
 
-// Devuelve TRUE si existe el TComplejo en el vector
 bool TVectorCom::ExisteCom(const TComplejo &com) const
 {
     for (int i = 1; i <= tamano; i++)
@@ -147,8 +131,6 @@ bool TVectorCom::ExisteCom(const TComplejo &com) const
     return false;
 }
 
-// Mostrar por pantalla los elementos TComplejo del vector con PARTE REAL IGUAL
-// o POSTERIOR al argumento
 void TVectorCom::MostrarComplejos(double real) const
 {
     bool first = true;
@@ -169,7 +151,6 @@ void TVectorCom::MostrarComplejos(double real) const
     cout << "]";
 }
 
-// REDIMENSIONAR el vector de TComplejo
 bool TVectorCom::Redimensionar(int size)
 {
     if (size <= 0 || size == tamano)
@@ -190,7 +171,6 @@ bool TVectorCom::Redimensionar(int size)
     return true;
 }
 
-// Sobrecarga del operador de salida
 ostream &operator<<(ostream &output, const TVectorCom &v)
 {
     output << "[";
@@ -198,7 +178,6 @@ ostream &operator<<(ostream &output, const TVectorCom &v)
     for (int i = 1; i <= v.tamano; i++)
     {
         output << "(" << i << ") " << v.c[i - 1];
-
         if (i < v.tamano)
             output << ", ";
     }

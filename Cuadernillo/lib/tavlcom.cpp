@@ -1,8 +1,6 @@
 #include "tavlcom.h"
 #include <queue>
 
-// TNodoAVL//
-
 TNodoAVL::TNodoAVL()
 {
     fe = 0;
@@ -157,27 +155,6 @@ bool TAVLCom::Insertar(const TComplejo &tc, bool &i)
                     break;
                 }
             }
-            // haciendo if's no funciona, mejor switch
-            //  if(raiz->fe) {
-            //      if(raiz->fe == 0) {
-            //          i = false;
-            //      }
-            //      else if(raiz->fe == -1) {
-            //          i = true;
-            //      }
-            //      else if(raiz->fe == -2) {
-            //          if(raiz->iz.raiz->fe) {
-            //              if(raiz->fe == -1) {
-            //                  RotarIzquierda();
-            //   			    i = false;
-            //              }
-            //              else if(raiz->fe == 1) {
-            //                  RotarDobleIzquierda();
-            //   			    i = false;
-            //              }
-            //          }
-            //      }
-            //  }
         }
         if (der)
         {
@@ -311,7 +288,7 @@ void TAVLCom::RotarDobleIzquierda()
         raiz->de.raiz->fe = 0;
     }
 }
-// Devuelve TRUE si el elemento está en el árbol, FALSE en caso contrario
+
 bool TAVLCom::Buscar(const TComplejo &tc) const
 {
     bool encontrado = false;
@@ -319,7 +296,7 @@ bool TAVLCom::Buscar(const TComplejo &tc) const
     {
         if (tc == raiz->item)
         {
-            encontrado = true; // encontrado
+            encontrado = true;
         }
         else
         {
@@ -335,7 +312,7 @@ bool TAVLCom::Buscar(const TComplejo &tc) const
     }
     return encontrado;
 }
-// Borra un TComplejo del árbol AVL
+
 bool TAVLCom::Borrar(const TComplejo &tc)
 {
     bool borrado = false, i;
@@ -369,7 +346,6 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
             }
             else
             {
-                // solo nodo izq vacio
                 if (raiz->iz.raiz == NULL && raiz->de.raiz != NULL)
                 {
                     avl = raiz;
@@ -381,7 +357,6 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
                 }
                 else
                 {
-                    // solo nodo der vacio
                     if (raiz->iz.raiz != NULL && raiz->de.raiz == NULL)
                     {
                         avl = raiz;
@@ -404,27 +379,6 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
         if (izq)
         {
             raiz->fe++;
-            // no funciona con if's
-            //  if(raiz->fe == 0) {
-            //      i = true;
-            //  }
-            //  else if(raiz->fe == 1) {
-            //      i = false;
-            //  }
-            //  else if(raiz->fe == 2) {
-            //      if(raiz->de.raiz->fe == -1) {
-            //          RotarDobleDerecha();
-            //          i = true;
-            //      }
-            //      else if(raiz->de.raiz->fe == 0) {
-            //          RotarDerecha();
-            //          i = false;
-            //      }
-            //      else if(raiz->de.raiz->fe == 1) {
-            //          RotarDerecha();
-            //          i = true;
-            //      }
-            //  }
             switch (raiz->fe)
             {
             case 0:
@@ -451,30 +405,10 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
                 }
             }
         }
-        // error aqui
+
         else if (der)
         {
             raiz->fe--;
-            // if(raiz->fe == 0) {
-            //     i = true;
-            // }
-            // else if(raiz->fe == -1) {
-            //     i = false;
-            // }
-            // else if(raiz->fe == -2) {
-            //     if(raiz->de.raiz->fe == -1) {
-            //         RotarIzquierda();
-            //         i = true;
-            //     }
-            //     else if(raiz->de.raiz->fe == 0) {
-            //         RotarIzquierda();
-            //         i = false;
-            //     }
-            //     else if(raiz->de.raiz->fe == 1) {
-            //         RotarDobleIzquierda();
-            //         i = true;
-            //     }
-            // }
             switch (raiz->fe)
             {
             case 0:
@@ -505,7 +439,6 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
     return borrado;
 }
 
-// Devuelve la altura del árbol (la altura de un árbol vacío es 0)
 int TAVLCom::Altura() const
 {
     int altura, rama_izq, rama_der;
@@ -529,7 +462,6 @@ int TAVLCom::Altura() const
     return altura;
 }
 
-// Devuelve el elemento TComplejo raíz del árbol AVL
 TComplejo TAVLCom::Raiz() const
 {
     TComplejo tc;
@@ -540,18 +472,16 @@ TComplejo TAVLCom::Raiz() const
     return tc;
 }
 
-// Devuelve el número de nodos del árbol (un árbol vacío posee 0 nodos)
 int TAVLCom::Nodos() const
 {
     int nodos = 0;
     if (raiz != NULL)
     {
-        nodos = 1 + raiz->iz.Nodos() + raiz->de.Nodos(); // suma nodos de ambas partes
+        nodos = 1 + raiz->iz.Nodos() + raiz->de.Nodos();
     }
     return nodos;
 }
 
-// Devuelve el número de nodos hoja en el árbol (la raíz puede ser nodo hoja)
 int TAVLCom::NodosHoja() const
 {
     int nodos_hoja = 0;
@@ -569,7 +499,6 @@ int TAVLCom::NodosHoja() const
     return nodos_hoja;
 }
 
-// AUXILIAR: Devuelve el recorrido en inorden
 void TAVLCom::InordenAux(TVectorCom &tv, int &pos) const
 {
     if (raiz != NULL)
@@ -581,7 +510,6 @@ void TAVLCom::InordenAux(TVectorCom &tv, int &pos) const
     }
 }
 
-// AUXILIAR: Devuelve el recorrido en preorden
 void TAVLCom::PreordenAux(TVectorCom &tv, int &pos) const
 {
     if (raiz != NULL)
@@ -593,7 +521,6 @@ void TAVLCom::PreordenAux(TVectorCom &tv, int &pos) const
     }
 }
 
-// AUXILIAR: Devuelve el recorrido en postorden
 void TAVLCom::PostordenAux(TVectorCom &tv, int &pos) const
 {
     if (raiz != NULL)
@@ -605,7 +532,6 @@ void TAVLCom::PostordenAux(TVectorCom &tv, int &pos) const
     }
 }
 
-// privada
 TComplejo TAVLCom::BuscarNodo()
 {
     TComplejo mayor;
@@ -623,7 +549,6 @@ TComplejo TAVLCom::BuscarNodo()
     return mayor;
 }
 
-// Devuelve el recorrido en inorden sobre un vector
 TVectorCom TAVLCom::Inorden() const
 {
     TVectorCom tv(Nodos());
@@ -632,7 +557,6 @@ TVectorCom TAVLCom::Inorden() const
     return tv;
 }
 
-// Devuelve el recorrido en preorden sobre un vector
 TVectorCom TAVLCom::Preorden() const
 {
     TVectorCom tv(Nodos());
@@ -641,7 +565,6 @@ TVectorCom TAVLCom::Preorden() const
     return tv;
 }
 
-// Devuelve el recorrido en postorden sobre un vector
 TVectorCom TAVLCom::Postorden() const
 {
     TVectorCom tv(Nodos());
@@ -678,7 +601,7 @@ TVectorCom TAVLCom::Niveles() const
     }
     return tv;
 }
-// ostream (llamar a niveles())
+
 ostream &operator<<(ostream &os, const TAVLCom &avl)
 {
     TVectorCom tv = avl.Niveles();
