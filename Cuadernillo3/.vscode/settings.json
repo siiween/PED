@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "iosfwd": "c",
+        "*.tcc": "cpp",
+        "compare": "cpp",
+        "type_traits": "cpp"
+    }
+}
