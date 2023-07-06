@@ -1,147 +1,162 @@
-//
-// Created by carlo on 12/06/2023.
-//
-
 #include "tcomplejo.h"
 #include <cmath>
 
-TComplejo::TComplejo() : re(0), im(0) {}
+TComplejo::TComplejo()
+{
+    this->re = 0;
+    this->im = 0;
+}
 
-TComplejo::TComplejo(double real) : re(real), im(0) {}
+TComplejo::TComplejo(double real)
+{
+    this->re = real;
+    this->im = 0;
+}
 
-TComplejo::TComplejo(double real, double imag) : re(real), im(imag) {}
+TComplejo::TComplejo(double real, double imaginario)
+{
+    this->re = real;
+    this->im = imaginario;
+}
 
-TComplejo::TComplejo(const TComplejo &other) : re(other.re), im(other.im) {}
+TComplejo::TComplejo(const TComplejo &complejo)
+{
+    this->re = complejo.re;
+    this->im = complejo.im;
+}
 
 TComplejo::~TComplejo() {}
 
-TComplejo &TComplejo::operator=(const TComplejo &tcom)
+TComplejo &TComplejo::operator=(const TComplejo &complejo)
 {
-    if (this != &tcom)
+    if (this != &complejo)
     {
-        re = tcom.re;
-        im = tcom.im;
+        this->re = complejo.re;
+        this->im = complejo.im;
     }
     return *this;
 }
 
-TComplejo TComplejo::operator+(const TComplejo &tcom) const
+TComplejo TComplejo::operator+(const TComplejo &complejo) const
 {
-    TComplejo resultado;
-    resultado.re = re + tcom.re;
-    resultado.im = im + tcom.im;
-    return resultado;
+    TComplejo res;
+    res.re = this->re + complejo.re;
+    res.im = this->im + complejo.im;
+    return res;
 }
 
-TComplejo TComplejo::operator-(const TComplejo &tcom) const
+TComplejo TComplejo::operator-(const TComplejo &complejo) const
 {
-    TComplejo resultado;
-    resultado.re = re - tcom.re;
-    resultado.im = im - tcom.im;
-    return resultado;
+    TComplejo res;
+    res.re = this->re - complejo.re;
+    res.im = this->im - complejo.im;
+    return res;
 }
 
-TComplejo TComplejo::operator*(const TComplejo &tcom) const
+TComplejo TComplejo::operator*(const TComplejo &complejo) const
 {
-    TComplejo resultado;
-    resultado.re = re * tcom.re - im * tcom.im;
-    resultado.im = re * tcom.im + im * tcom.re;
-    return resultado;
+    TComplejo res;
+    res.re = (this->re * complejo.re) - (this->im * complejo.im);
+    res.im = (this->re * complejo.im) + (this->im * complejo.re);
+    return res;
 }
 
 TComplejo TComplejo::operator+(double real) const
 {
-    TComplejo resultado;
-    resultado.re = re + real;
-    resultado.im = im;
-    return resultado;
+    TComplejo res;
+    res.re = this->re + real;
+    res.im = this->im;
+    return res;
 }
 
 TComplejo TComplejo::operator-(double real) const
 {
-    TComplejo resultado;
-    resultado.re = re - real;
-    resultado.im = im;
-    return resultado;
+    TComplejo res;
+    res.re = this->re - real;
+    res.im = this->im;
+    return res;
 }
 
 TComplejo TComplejo::operator*(double real) const
 {
-    TComplejo resultado;
-    resultado.re = re * real;
-    resultado.im = im * real;
-    return resultado;
+    TComplejo res;
+    res.re = this->re * real;
+    res.im = this->im * real;
+    return res;
 }
 
-bool TComplejo::operator==(const TComplejo &tcom) const
+bool TComplejo::operator==(const TComplejo &complejo) const
 {
-    return (re == tcom.re) && (im == tcom.im);
+    return ((this->re == complejo.re) && (this->im == complejo.im));
 }
 
-bool TComplejo::operator!=(const TComplejo &tcom) const
+bool TComplejo::operator!=(const TComplejo &complejo) const
 {
-    return !(*this == tcom);
+    return !(*this == complejo);
 }
 
 double TComplejo::Re() const
 {
-    return re;
+    return this->re;
 }
 
 double TComplejo::Im() const
 {
-    return im;
+    return this->im;
 }
 
-void TComplejo::Re(double valor)
+void TComplejo::Re(double real)
 {
-    re = valor;
+    this->re = real;
 }
 
-void TComplejo::Im(double valor)
+void TComplejo::Im(double imaginario)
 {
-    im = valor;
+    this->im = imaginario;
 }
 
 double TComplejo::Arg() const
 {
-    return atan2(im, re);
+    return atan2(this->im, this->re);
 }
 
 double TComplejo::Mod() const
 {
-    return sqrt(re * re + im * im);
+    return sqrt((this->re * this->re) + (this->im * this->im));
 }
 
-std::ostream &operator<<(std::ostream &os, const TComplejo &complejo)
+TComplejo operator+(double real, const TComplejo &complejo)
 {
-    os << "(" << complejo.re << " " << complejo.im << ")";
-    return os;
+    return TComplejo((real + complejo.re), complejo.im);
 }
 
-TComplejo operator+(double valor, const TComplejo &complejo)
+TComplejo operator-(double real, const TComplejo &complejo)
 {
-    return TComplejo(valor + complejo.re, complejo.im);
+    return TComplejo((real - complejo.re), -complejo.im);
 }
 
-TComplejo operator-(double valor, const TComplejo &complejo)
+TComplejo operator*(double real, const TComplejo &complejo)
 {
-    return TComplejo(valor - complejo.re, -complejo.im);
-}
-
-TComplejo operator*(double valor, const TComplejo &complejo)
-{
-    return TComplejo(valor * complejo.re, valor * complejo.im);
+    return TComplejo((real * complejo.re), (real * complejo.im));
 }
 
 bool TComplejo::operator>(const TComplejo &complejo) const
 {
-    return Mod() > complejo.Mod() ||
-           Mod() == complejo.Mod() && Re() > complejo.Re() ||
-           Mod() == complejo.Mod() && Re() == complejo.Re() && Im() > complejo.Im();
+    return (Mod() > complejo.Mod()) ||
+           ((Mod() == complejo.Mod()) && (Re() > complejo.Re())) ||
+           ((Mod() == complejo.Mod()) && (Re() == complejo.Re()) && (Im() > complejo.Im()));
 }
 
 bool TComplejo::operator<(const TComplejo &complejo) const
 {
-    return *this != complejo && !(*this > complejo);
+    return ((*this != complejo) && !(*this > complejo));
+}
+
+std::ostream &operator<<(std::ostream &salida, const TComplejo &complejo)
+{
+    salida << "(";
+    salida << complejo.re << " " << complejo.im;
+    salida << ")";
+
+    return salida;
 }
