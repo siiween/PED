@@ -1,25 +1,29 @@
 #include "tavlcom.h"
 #include <queue>
 
+// TNodoAVL//
 
-//TNodoAVL//
-
-TNodoAVL::TNodoAVL () {
+TNodoAVL::TNodoAVL()
+{
     fe = 0;
 }
 
-TNodoAVL::TNodoAVL(const TComplejo &tc):item(tc) {
+TNodoAVL::TNodoAVL(const TComplejo &tc) : item(tc)
+{
     fe = 0;
 }
 // Constructor de copia
-TNodoAVL::TNodoAVL (const TNodoAVL &nodo):item(nodo.item), iz(nodo.iz), de(nodo.de), fe(nodo.fe) {
+TNodoAVL::TNodoAVL(const TNodoAVL &nodo) : item(nodo.item), iz(nodo.iz), de(nodo.de), fe(nodo.fe)
+{
 }
 // Destructor
-TNodoAVL::~TNodoAVL () {
-    //composicion
+TNodoAVL::~TNodoAVL()
+{
+    // composicion
 }
 // Sobrecarga del operador asignación
-TNodoAVL & TNodoAVL::operator=(const TNodoAVL &nodo) {
+TNodoAVL &TNodoAVL::operator=(const TNodoAVL &nodo)
+{
     item = nodo.item;
     iz = nodo.iz;
     de = nodo.de;
@@ -27,41 +31,49 @@ TNodoAVL & TNodoAVL::operator=(const TNodoAVL &nodo) {
     return *this;
 }
 
+// TAVLCom//
 
-
-//TAVLCom//
-
-TAVLCom::TAVLCom () {
+TAVLCom::TAVLCom()
+{
     raiz = NULL;
 }
 
 // Constructor de copia
-TAVLCom::TAVLCom (const TAVLCom &avl){
-    if(avl.raiz != NULL) {
+TAVLCom::TAVLCom(const TAVLCom &avl)
+{
+    if (avl.raiz != NULL)
+    {
         raiz = new TNodoAVL(*(avl.raiz));
     }
-    else {
+    else
+    {
         raiz = NULL;
     }
 }
 
 // Destructor
-TAVLCom::~TAVLCom (){
-    if(raiz != NULL) {
+TAVLCom::~TAVLCom()
+{
+    if (raiz != NULL)
+    {
         delete raiz;
         raiz = NULL;
     }
 }
 
 // Sobrecarga del operador asignación
-TAVLCom &TAVLCom::operator=(const TAVLCom &avl){
-    if(this != &avl) {
+TAVLCom &TAVLCom::operator=(const TAVLCom &avl)
+{
+    if (this != &avl)
+    {
         this->~TAVLCom();
-        if(avl.raiz != NULL) {
+        if (avl.raiz != NULL)
+        {
             raiz = new TNodoAVL();
             *raiz = (*(avl.raiz));
         }
-        else {
+        else
+        {
             raiz = NULL;
         }
     }
@@ -69,179 +81,207 @@ TAVLCom &TAVLCom::operator=(const TAVLCom &avl){
 }
 
 // Sobrecarga del operador igualdad
-bool TAVLCom::operator==(const TAVLCom &avl) const{
+bool TAVLCom::operator==(const TAVLCom &avl) const
+{
     TVectorCom arbol1 = Inorden();
-	TVectorCom arbol2 = avl.Inorden();
-	return arbol1 == arbol2;
+    TVectorCom arbol2 = avl.Inorden();
+    return arbol1 == arbol2;
 }
 
 // Sobrecarga del operador desigualdad
-bool TAVLCom::operator!=(const TAVLCom &avl) const{
+bool TAVLCom::operator!=(const TAVLCom &avl) const
+{
     return !(*this == avl);
 }
 
 // Devuelve TRUE si el árbol está vacío, FALSE en caso contrario
-bool TAVLCom::EsVacio() const{
+bool TAVLCom::EsVacio() const
+{
     return raiz == NULL;
 }
 
 // Inserta el elemento TComplejo en el árbol
-bool TAVLCom::Insertar(const TComplejo &tc){
+bool TAVLCom::Insertar(const TComplejo &tc)
+{
     bool insertado = false, i;
-	insertado = Insertar(tc, i); // crece no se usa para nada.
-	return insertado;
+    insertado = Insertar(tc, i); // crece no se usa para nada.
+    return insertado;
 }
 
-bool TAVLCom::Insertar(const TComplejo &tc, bool &i){ //i es el booleano que dice si crece
+bool TAVLCom::Insertar(const TComplejo &tc, bool &i)
+{ // i es el booleano que dice si crece
     bool insertado = false, izq = false, der = false;
 
-    if(raiz != NULL) {
-        if(tc < raiz->item) {
+    if (raiz != NULL)
+    {
+        if (tc < raiz->item)
+        {
             insertado = raiz->iz.Insertar(tc, izq);
             der = false;
         }
-        else {
-            if(tc > raiz->item) {
+        else
+        {
+            if (tc > raiz->item)
+            {
                 insertado = raiz->de.Insertar(tc, der);
                 izq = false;
             }
-            else {
+            else
+            {
                 // izq = der = false;
                 // insertado = false;
                 i = false;
             }
         }
-        if(izq) {
+        if (izq)
+        {
             raiz->fe--;
-            switch(raiz->fe){
+            switch (raiz->fe)
+            {
+            case -1:
+                i = true;
+                break;
+            case 0:
+                i = false;
+                break;
+            case -2:
+                switch (raiz->iz.raiz->fe)
+                {
                 case -1:
-                    i = true;
-                    break;
-                case 0:
+                    RotarIzquierda();
                     i = false;
                     break;
-                case -2:
-                switch(raiz->iz.raiz->fe){
-                    case -1:
-                        RotarIzquierda();
-                        i = false;
-                    break;
-                    case 1:		
-                        RotarDobleIzquierda();
-                        i = false;
+                case 1:
+                    RotarDobleIzquierda();
+                    i = false;
                     break;
                 }
-		    }
-            //haciendo if's no funciona, mejor switch
-            // if(raiz->fe) {
-            //     if(raiz->fe == 0) {
-            //         i = false;
-            //     }
-            //     else if(raiz->fe == -1) {
-            //         i = true;
-            //     }
-            //     else if(raiz->fe == -2) {
-            //         if(raiz->iz.raiz->fe) {
-            //             if(raiz->fe == -1) {
-            //                 RotarIzquierda();
-			//  			    i = false;
-            //             }
-            //             else if(raiz->fe == 1) {
-            //                 RotarDobleIzquierda();
-			//  			    i = false;
-            //             }
-            //         }
-            //     }
-            // }
+            }
+            // haciendo if's no funciona, mejor switch
+            //  if(raiz->fe) {
+            //      if(raiz->fe == 0) {
+            //          i = false;
+            //      }
+            //      else if(raiz->fe == -1) {
+            //          i = true;
+            //      }
+            //      else if(raiz->fe == -2) {
+            //          if(raiz->iz.raiz->fe) {
+            //              if(raiz->fe == -1) {
+            //                  RotarIzquierda();
+            //   			    i = false;
+            //              }
+            //              else if(raiz->fe == 1) {
+            //                  RotarDobleIzquierda();
+            //   			    i = false;
+            //              }
+            //          }
+            //      }
+            //  }
         }
-        if(der) {
+        if (der)
+        {
             raiz->fe++;
-            switch(raiz->fe){
-			case 0:
-				i = false;
-				break;
-			case 1:
-				i = true;
-				break;
-			case 2:
-				switch(raiz->de.raiz->fe){
-					case -1:
-						i = false;
-						RotarDobleDerecha();
-						break;
-                    case 1:
-						RotarDerecha();
-						i = false;
-						break;
-				}
-		    }
+            switch (raiz->fe)
+            {
+            case 0:
+                i = false;
+                break;
+            case 1:
+                i = true;
+                break;
+            case 2:
+                switch (raiz->de.raiz->fe)
+                {
+                case -1:
+                    i = false;
+                    RotarDobleDerecha();
+                    break;
+                case 1:
+                    RotarDerecha();
+                    i = false;
+                    break;
+                }
+            }
         }
     }
-    else {
+    else
+    {
         raiz = new TNodoAVL(tc);
         i = true;
     }
     return insertado;
 }
 
-void TAVLCom::RotarDerecha() {
+void TAVLCom::RotarDerecha()
+{
     TNodoAVL *avl = raiz;
     raiz = avl->de.raiz;
     avl->de.raiz = raiz->iz.raiz;
     raiz->iz.raiz = avl;
 
-    if(raiz->fe != 0) {
+    if (raiz->fe != 0)
+    {
         raiz->fe = 0;
         raiz->iz.raiz->fe = 0;
     }
-    else {
+    else
+    {
         raiz->fe = -1;
         raiz->iz.raiz->fe = 1;
     }
 }
-void TAVLCom::RotarIzquierda() {
+void TAVLCom::RotarIzquierda()
+{
     TNodoAVL *avl = raiz;
     raiz = avl->iz.raiz;
     avl->iz.raiz = raiz->de.raiz;
     raiz->de.raiz = avl;
 
-    if(raiz->fe != 0) {
+    if (raiz->fe != 0)
+    {
         raiz->fe = 0;
         raiz->de.raiz->fe = 0;
     }
-    else {
+    else
+    {
         raiz->fe = 1;
         raiz->de.raiz->fe = -1;
     }
 }
-void TAVLCom::RotarDobleDerecha() {
+void TAVLCom::RotarDobleDerecha()
+{
     TNodoAVL *avl = raiz, *izq, *der;
-	
-	raiz = raiz->de.raiz->iz.raiz;
-	izq = raiz->iz.raiz;
-	der = raiz->de.raiz;
-	raiz->de.raiz = avl->de.raiz;
-	raiz->iz.raiz = avl;
-	avl->de.raiz = izq;
-	raiz->de.raiz->iz.raiz = der;
-	
-    if(raiz->fe == -1) {
+
+    raiz = raiz->de.raiz->iz.raiz;
+    izq = raiz->iz.raiz;
+    der = raiz->de.raiz;
+    raiz->de.raiz = avl->de.raiz;
+    raiz->iz.raiz = avl;
+    avl->de.raiz = izq;
+    raiz->de.raiz->iz.raiz = der;
+
+    if (raiz->fe == -1)
+    {
         raiz->fe = 0;
         raiz->iz.raiz->fe = 0;
-        raiz->de.raiz->fe = 1;	
+        raiz->de.raiz->fe = 1;
     }
-    else if(raiz->fe == 0) {
+    else if (raiz->fe == 0)
+    {
         raiz->fe = 0;
         raiz->iz.raiz->fe = 0;
         raiz->de.raiz->fe = 0;
     }
-    else {
+    else
+    {
         raiz->fe = 0;
-	 	raiz->iz.raiz->fe = -1;
-	 	raiz->de.raiz->fe = 0;	
+        raiz->iz.raiz->fe = -1;
+        raiz->de.raiz->fe = 0;
     }
 }
-void TAVLCom::RotarDobleIzquierda() {
+void TAVLCom::RotarDobleIzquierda()
+{
     TNodoAVL *avl = raiz, *izq, *der;
 
     raiz = raiz->iz.raiz->de.raiz;
@@ -252,34 +292,43 @@ void TAVLCom::RotarDobleIzquierda() {
     avl->iz.raiz = der;
     raiz->iz.raiz->de.raiz = izq;
 
-    if(raiz->fe == -1) {
+    if (raiz->fe == -1)
+    {
         raiz->fe = 0;
         raiz->iz.raiz->fe = 0;
         raiz->de.raiz->fe = 1;
     }
-    else if(raiz->fe == 0) {
+    else if (raiz->fe == 0)
+    {
         raiz->fe = 0;
         raiz->iz.raiz->fe = 0;
         raiz->de.raiz->fe = 0;
     }
-    else {
+    else
+    {
         raiz->fe = 0;
         raiz->iz.raiz->fe = -1;
         raiz->de.raiz->fe = 0;
     }
 }
 // Devuelve TRUE si el elemento está en el árbol, FALSE en caso contrario
-bool TAVLCom::Buscar(const TComplejo &tc)const{
+bool TAVLCom::Buscar(const TComplejo &tc) const
+{
     bool encontrado = false;
-    if(raiz != NULL) {
-        if(tc == raiz->item) {
-            encontrado = true; //encontrado
+    if (raiz != NULL)
+    {
+        if (tc == raiz->item)
+        {
+            encontrado = true; // encontrado
         }
-        else {
-            if(tc < raiz->item) {
+        else
+        {
+            if (tc < raiz->item)
+            {
                 encontrado = raiz->iz.Buscar(tc);
             }
-            else {
+            else
+            {
                 encontrado = raiz->de.Buscar(tc);
             }
         }
@@ -287,33 +336,42 @@ bool TAVLCom::Buscar(const TComplejo &tc)const{
     return encontrado;
 }
 // Borra un TComplejo del árbol AVL
-bool TAVLCom::Borrar(const TComplejo &tc){
-	bool borrado = false, i;
-	borrado = Borrar(tc, i);
-	return borrado;
+bool TAVLCom::Borrar(const TComplejo &tc)
+{
+    bool borrado = false, i;
+    borrado = Borrar(tc, i);
+    return borrado;
 }
 
-bool TAVLCom::Borrar(const TComplejo &tc, bool &i){
+bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
+{
     bool borrado = false, izq = false, der = false;
     TNodoAVL *avl;
 
-    if(raiz != NULL) {
-        if(tc < raiz->item) {
+    if (raiz != NULL)
+    {
+        if (tc < raiz->item)
+        {
             borrado = raiz->iz.Borrar(tc, izq);
         }
-        else if(tc > raiz->item) {
+        else if (tc > raiz->item)
+        {
             borrado = raiz->de.Borrar(tc, der);
         }
-        else {
-            if(raiz->iz.raiz == NULL && raiz->de.raiz == NULL) {
+        else
+        {
+            if (raiz->iz.raiz == NULL && raiz->de.raiz == NULL)
+            {
                 i = true;
                 delete raiz;
                 raiz = NULL;
                 borrado = true;
             }
-            else {
-                //solo nodo izq vacio
-                if(raiz->iz.raiz == NULL && raiz->de.raiz != NULL) {
+            else
+            {
+                // solo nodo izq vacio
+                if (raiz->iz.raiz == NULL && raiz->de.raiz != NULL)
+                {
                     avl = raiz;
                     raiz = raiz->de.raiz;
                     avl->de.raiz = NULL;
@@ -321,9 +379,11 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i){
                     i = true;
                     borrado = true;
                 }
-                else {
-                    //solo nodo der vacio
-                    if(raiz->iz.raiz != NULL && raiz->de.raiz == NULL) {
+                else
+                {
+                    // solo nodo der vacio
+                    if (raiz->iz.raiz != NULL && raiz->de.raiz == NULL)
+                    {
                         avl = raiz;
                         raiz = raiz->iz.raiz;
                         avl->iz.raiz = NULL;
@@ -331,7 +391,8 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i){
                         i = true;
                         borrado = true;
                     }
-                    else {
+                    else
+                    {
                         TComplejo mayor = raiz->iz.BuscarNodo();
                         raiz->item = mayor;
                         raiz->iz.Borrar(mayor, izq);
@@ -340,55 +401,59 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i){
                 }
             }
         }
-        if(izq) {
+        if (izq)
+        {
             raiz->fe++;
-            //no funciona con if's
-            // if(raiz->fe == 0) {
-            //     i = true;
-            // }
-            // else if(raiz->fe == 1) {
-            //     i = false;
-            // }
-            // else if(raiz->fe == 2) {
-            //     if(raiz->de.raiz->fe == -1) {
-            //         RotarDobleDerecha();
-            //         i = true;
-            //     }
-            //     else if(raiz->de.raiz->fe == 0) {
-            //         RotarDerecha();
-            //         i = false;
-            //     }
-            //     else if(raiz->de.raiz->fe == 1) {
-            //         RotarDerecha();
-            //         i = true;
-            //     }
-            // }
-            switch(raiz->fe) {
+            // no funciona con if's
+            //  if(raiz->fe == 0) {
+            //      i = true;
+            //  }
+            //  else if(raiz->fe == 1) {
+            //      i = false;
+            //  }
+            //  else if(raiz->fe == 2) {
+            //      if(raiz->de.raiz->fe == -1) {
+            //          RotarDobleDerecha();
+            //          i = true;
+            //      }
+            //      else if(raiz->de.raiz->fe == 0) {
+            //          RotarDerecha();
+            //          i = false;
+            //      }
+            //      else if(raiz->de.raiz->fe == 1) {
+            //          RotarDerecha();
+            //          i = true;
+            //      }
+            //  }
+            switch (raiz->fe)
+            {
+            case 0:
+                i = true;
+                break;
+            case 1:
+                i = false;
+                break;
+            case 2:
+                switch (raiz->de.raiz->fe)
+                {
                 case 0:
+                    RotarDerecha();
+                    i = false;
+                    break;
+                case -1:
+                    RotarDobleDerecha();
                     i = true;
                     break;
                 case 1:
-                    i = false;
+                    RotarDerecha();
+                    i = true;
                     break;
-                case 2:
-                    switch(raiz->de.raiz->fe) {
-                        case 0:
-                            RotarDerecha();
-                            i = false;
-                            break;
-                        case -1:
-                            RotarDobleDerecha();
-                            i = true;
-                            break;
-                        case 1:
-                            RotarDerecha();
-                            i = true;
-                            break;
-                    }   
+                }
             }
         }
-        //error aqui
-        else if(der) {
+        // error aqui
+        else if (der)
+        {
             raiz->fe--;
             // if(raiz->fe == 0) {
             //     i = true;
@@ -410,28 +475,30 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i){
             //         i = true;
             //     }
             // }
-            switch(raiz->fe) {
+            switch (raiz->fe)
+            {
+            case 0:
+                i = true;
+                break;
+            case -1:
+                i = false;
+                break;
+            case -2:
+                switch (raiz->iz.raiz->fe)
+                {
                 case 0:
-                    i = true;
-                    break;
-                case -1:
+                    RotarIzquierda();
                     i = false;
                     break;
-                case -2:
-                    switch(raiz->iz.raiz->fe) {
-                        case 0:
-                            RotarIzquierda();
-                            i = false;
-                            break;
-                        case -1:
-                            RotarIzquierda();
-                            i = true;
-                            break;
-                        case 1:
-                            RotarDobleIzquierda();
-                            i = true;
-                            break;
-                    }   
+                case -1:
+                    RotarIzquierda();
+                    i = true;
+                    break;
+                case 1:
+                    RotarDobleIzquierda();
+                    i = true;
+                    break;
+                }
             }
         }
     }
@@ -439,50 +506,63 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i){
 }
 
 // Devuelve la altura del árbol (la altura de un árbol vacío es 0)
-int TAVLCom::Altura()const{
+int TAVLCom::Altura() const
+{
     int altura, rama_izq, rama_der;
-    if(raiz != NULL) {
+    if (raiz != NULL)
+    {
         rama_izq = raiz->iz.Altura();
         rama_der = raiz->de.Altura();
-        if(rama_izq < rama_der) {
+        if (rama_izq < rama_der)
+        {
             altura = 1 + rama_der;
         }
-        else {
+        else
+        {
             altura = 1 + rama_izq;
         }
     }
-    else {
+    else
+    {
         altura = 0;
     }
     return altura;
 }
 
 // Devuelve el elemento TComplejo raíz del árbol AVL
-TComplejo TAVLCom::Raiz()const{
+TComplejo TAVLCom::Raiz() const
+{
     TComplejo tc;
-    if(raiz != NULL) {
+    if (raiz != NULL)
+    {
         tc = raiz->item;
     }
     return tc;
 }
 
 // Devuelve el número de nodos del árbol (un árbol vacío posee 0 nodos)
-int TAVLCom::Nodos()const{
+int TAVLCom::Nodos() const
+{
     int nodos = 0;
-    if(raiz != NULL) {
-        nodos = 1 + raiz->iz.Nodos() + raiz->de.Nodos(); //suma nodos de ambas partes
+    if (raiz != NULL)
+    {
+        nodos = 1 + raiz->iz.Nodos() + raiz->de.Nodos(); // suma nodos de ambas partes
     }
     return nodos;
 }
 
 // Devuelve el número de nodos hoja en el árbol (la raíz puede ser nodo hoja)
-int TAVLCom::NodosHoja()const{
+int TAVLCom::NodosHoja() const
+{
     int nodos_hoja = 0;
-    if(raiz != NULL) {
-        if(raiz->iz.raiz == NULL && raiz->de.raiz ==NULL) {
+    if (raiz != NULL)
+    {
+        if (raiz->iz.raiz == NULL && raiz->de.raiz == NULL)
+        {
             nodos_hoja = 1;
         }
-        else {
+        else
+        {
             nodos_hoja = raiz->iz.NodosHoja() + raiz->de.NodosHoja();
         }
     }
@@ -490,8 +570,10 @@ int TAVLCom::NodosHoja()const{
 }
 
 // AUXILIAR: Devuelve el recorrido en inorden
-void TAVLCom::InordenAux(TVectorCom &tv, int &pos)const{
-    if(raiz != NULL) {
+void TAVLCom::InordenAux(TVectorCom &tv, int &pos) const
+{
+    if (raiz != NULL)
+    {
         raiz->iz.InordenAux(tv, pos);
         tv[pos] = raiz->item;
         pos++;
@@ -500,8 +582,10 @@ void TAVLCom::InordenAux(TVectorCom &tv, int &pos)const{
 }
 
 // AUXILIAR: Devuelve el recorrido en preorden
-void TAVLCom::PreordenAux(TVectorCom &tv, int &pos)const{
-    if(raiz != NULL) {
+void TAVLCom::PreordenAux(TVectorCom &tv, int &pos) const
+{
+    if (raiz != NULL)
+    {
         tv[pos] = raiz->item;
         pos++;
         raiz->iz.PreordenAux(tv, pos);
@@ -510,8 +594,10 @@ void TAVLCom::PreordenAux(TVectorCom &tv, int &pos)const{
 }
 
 // AUXILIAR: Devuelve el recorrido en postorden
-void TAVLCom::PostordenAux(TVectorCom &tv, int &pos)const{
-    if(raiz != NULL) {
+void TAVLCom::PostordenAux(TVectorCom &tv, int &pos) const
+{
+    if (raiz != NULL)
+    {
         raiz->iz.PostordenAux(tv, pos);
         raiz->de.PostordenAux(tv, pos);
         tv[pos] = raiz->item;
@@ -519,14 +605,18 @@ void TAVLCom::PostordenAux(TVectorCom &tv, int &pos)const{
     }
 }
 
-//privada
-TComplejo TAVLCom::BuscarNodo() {
+// privada
+TComplejo TAVLCom::BuscarNodo()
+{
     TComplejo mayor;
-    if(raiz != NULL) {
-        if(raiz->de.raiz != NULL) {
+    if (raiz != NULL)
+    {
+        if (raiz->de.raiz != NULL)
+        {
             mayor = raiz->de.BuscarNodo();
         }
-        else {
+        else
+        {
             mayor = raiz->item;
         }
     }
@@ -534,7 +624,8 @@ TComplejo TAVLCom::BuscarNodo() {
 }
 
 // Devuelve el recorrido en inorden sobre un vector
-TVectorCom TAVLCom::Inorden()const{
+TVectorCom TAVLCom::Inorden() const
+{
     TVectorCom tv(Nodos());
     int pos = 1;
     InordenAux(tv, pos);
@@ -542,7 +633,8 @@ TVectorCom TAVLCom::Inorden()const{
 }
 
 // Devuelve el recorrido en preorden sobre un vector
-TVectorCom TAVLCom::Preorden()const{
+TVectorCom TAVLCom::Preorden() const
+{
     TVectorCom tv(Nodos());
     int pos = 1;
     PreordenAux(tv, pos);
@@ -550,38 +642,45 @@ TVectorCom TAVLCom::Preorden()const{
 }
 
 // Devuelve el recorrido en postorden sobre un vector
-TVectorCom TAVLCom::Postorden()const{
+TVectorCom TAVLCom::Postorden() const
+{
     TVectorCom tv(Nodos());
     int pos = 1;
     PostordenAux(tv, pos);
     return tv;
 }
 
-TVectorCom TAVLCom::Niveles() const{
+TVectorCom TAVLCom::Niveles() const
+{
     queue<TNodoAVL *> cola;
     TNodoAVL *tnodo;
     TVectorCom tv(Nodos());
 
     cola.push(raiz);
     int i = 0;
-    while(!cola.empty()) {
+    while (!cola.empty())
+    {
         tnodo = cola.front();
         cola.pop();
-        if(tnodo != NULL) {
+        if (tnodo != NULL)
+        {
             tv[i] = tnodo->item;
             i++;
-            if(!tnodo->iz.EsVacio()) {
+            if (!tnodo->iz.EsVacio())
+            {
                 cola.push(tnodo->iz.raiz);
             }
-            if(!tnodo->de.EsVacio()) {
+            if (!tnodo->de.EsVacio())
+            {
                 cola.push(tnodo->de.raiz);
             }
         }
     }
     return tv;
 }
-//ostream (llamar a niveles())
-ostream &operator<<(ostream &os, const TAVLCom &avl) {
+// ostream (llamar a niveles())
+ostream &operator<<(ostream &os, const TAVLCom &avl)
+{
     TVectorCom tv = avl.Niveles();
     os << tv;
     return os;

@@ -6,7 +6,8 @@
 #define TVECTORCOM_H
 #include "tcomplejo.h"
 
-class TVectorCom {
+class TVectorCom
+{
 private:
     TComplejo *c;
     int tamano;
@@ -15,28 +16,27 @@ public:
     // Constructores
     TVectorCom();
     TVectorCom(int);
-    TVectorCom(const TVectorCom&);
+    TVectorCom(const TVectorCom &);
 
     // Destructor
     ~TVectorCom();
 
     // Sobrecarga de operadores
-    TVectorCom& operator=(TVectorCom&);
-    bool operator==(const TVectorCom&) const;
-    bool operator!=(TVectorCom&);
-    TComplejo& operator[](int);
+    TVectorCom &operator=(TVectorCom &);
+    bool operator==(const TVectorCom &) const;
+    bool operator!=(TVectorCom &);
+    TComplejo &operator[](int);
     TComplejo operator[](int) const;
 
     // Métodos
     int Tamano();
     int Ocupadas();
-    bool ExisteCom(const TComplejo&);
+    bool ExisteCom(const TComplejo &);
     void MostrarComplejos(double);
     bool Redimensionar(int);
 
     // Funciones amigas
-    friend ostream& operator<<(ostream&, const TVectorCom&);
+    friend ostream &operator<<(ostream &, const TVectorCom &);
 };
 
 #endif
-

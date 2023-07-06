@@ -8,7 +8,8 @@
 
 class TNodoABB;
 
-class TABBCom{
+class TABBCom
+{
 private:
     TNodoABB *nodo;
 
@@ -42,8 +43,9 @@ public:
     friend ostream &operator<<(ostream &os, const TABBCom &abb);
 };
 
-class TNodoABB {
-friend class TABBCom;
+class TNodoABB
+{
+    friend class TABBCom;
 
 private:
     TComplejo item;
