@@ -22,17 +22,17 @@ public:
     ~TVectorCom();
 
     // Sobrecarga de operadores
-    TVectorCom &operator=(TVectorCom &);
+    TVectorCom &operator=(const TVectorCom &);
     bool operator==(const TVectorCom &) const;
-    bool operator!=(TVectorCom &);
+    bool operator!=(const TVectorCom &) const;
     TComplejo &operator[](int);
     TComplejo operator[](int) const;
 
     // Métodos
-    int Tamano();
-    int Ocupadas();
-    bool ExisteCom(const TComplejo &);
-    void MostrarComplejos(double);
+    int Tamano() const;
+    int Ocupadas() const;
+    bool ExisteCom(const TComplejo &) const;
+    void MostrarComplejos(double) const;
     bool Redimensionar(int);
 
     // Funciones amigas

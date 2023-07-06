@@ -50,7 +50,7 @@ TVectorCom::~TVectorCom()
 }
 
 // Sobrecarga del operador de asignación
-TVectorCom &TVectorCom::operator=(TVectorCom &v)
+TVectorCom &TVectorCom::operator=(const TVectorCom &v)
 {
     if (this != &v)
     {
@@ -84,7 +84,7 @@ bool TVectorCom::operator==(const TVectorCom &v) const
 }
 
 // Sobrecarga del operador de desigualdad
-bool TVectorCom::operator!=(TVectorCom &v)
+bool TVectorCom::operator!=(const TVectorCom &v) const
 {
     return !(*this == v);
 }
@@ -116,13 +116,13 @@ TComplejo TVectorCom::operator[](int pos) const
 }
 
 // Tamaño del vector (posiciones TOTALES)
-int TVectorCom::Tamano()
+int TVectorCom::Tamano() const
 {
     return tamano;
 }
 
 // Cantidad de posiciones OCUPADAS (TComplejo NO VACIO) en el vector
-int TVectorCom::Ocupadas()
+int TVectorCom::Ocupadas() const
 {
     int count = 0;
 
@@ -136,7 +136,7 @@ int TVectorCom::Ocupadas()
 }
 
 // Devuelve TRUE si existe el TComplejo en el vector
-bool TVectorCom::ExisteCom(const TComplejo &com)
+bool TVectorCom::ExisteCom(const TComplejo &com) const
 {
     for (int i = 1; i <= tamano; i++)
     {
@@ -149,7 +149,7 @@ bool TVectorCom::ExisteCom(const TComplejo &com)
 
 // Mostrar por pantalla los elementos TComplejo del vector con PARTE REAL IGUAL
 // o POSTERIOR al argumento
-void TVectorCom::MostrarComplejos(double real)
+void TVectorCom::MostrarComplejos(double real) const
 {
     bool first = true;
 

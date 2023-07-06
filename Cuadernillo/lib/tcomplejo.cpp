@@ -25,7 +25,7 @@ TComplejo &TComplejo::operator=(const TComplejo &tcom)
     return *this;
 }
 
-TComplejo TComplejo::operator+(const TComplejo &tcom)
+TComplejo TComplejo::operator+(const TComplejo &tcom) const
 {
     TComplejo resultado;
     resultado.re = re + tcom.re;
@@ -33,7 +33,7 @@ TComplejo TComplejo::operator+(const TComplejo &tcom)
     return resultado;
 }
 
-TComplejo TComplejo::operator-(const TComplejo &tcom)
+TComplejo TComplejo::operator-(const TComplejo &tcom) const
 {
     TComplejo resultado;
     resultado.re = re - tcom.re;
@@ -41,7 +41,7 @@ TComplejo TComplejo::operator-(const TComplejo &tcom)
     return resultado;
 }
 
-TComplejo TComplejo::operator*(const TComplejo &tcom)
+TComplejo TComplejo::operator*(const TComplejo &tcom) const
 {
     TComplejo resultado;
     resultado.re = re * tcom.re - im * tcom.im;
@@ -49,7 +49,7 @@ TComplejo TComplejo::operator*(const TComplejo &tcom)
     return resultado;
 }
 
-TComplejo TComplejo::operator+(double real)
+TComplejo TComplejo::operator+(double real) const
 {
     TComplejo resultado;
     resultado.re = re + real;
@@ -57,7 +57,7 @@ TComplejo TComplejo::operator+(double real)
     return resultado;
 }
 
-TComplejo TComplejo::operator-(double real)
+TComplejo TComplejo::operator-(double real) const
 {
     TComplejo resultado;
     resultado.re = re - real;
@@ -65,7 +65,7 @@ TComplejo TComplejo::operator-(double real)
     return resultado;
 }
 
-TComplejo TComplejo::operator*(double real)
+TComplejo TComplejo::operator*(double real) const
 {
     TComplejo resultado;
     resultado.re = re * real;
@@ -73,22 +73,22 @@ TComplejo TComplejo::operator*(double real)
     return resultado;
 }
 
-bool TComplejo::operator==(const TComplejo &tcom)
+bool TComplejo::operator==(const TComplejo &tcom) const
 {
     return (re == tcom.re) && (im == tcom.im);
 }
 
-bool TComplejo::operator!=(const TComplejo &tcom)
+bool TComplejo::operator!=(const TComplejo &tcom) const
 {
     return !(*this == tcom);
 }
 
-double TComplejo::Re()
+double TComplejo::Re() const
 {
     return re;
 }
 
-double TComplejo::Im()
+double TComplejo::Im() const
 {
     return im;
 }
@@ -103,12 +103,12 @@ void TComplejo::Im(double valor)
     im = valor;
 }
 
-double TComplejo::Arg()
+double TComplejo::Arg() const
 {
     return atan2(im, re);
 }
 
-double TComplejo::Mod()
+double TComplejo::Mod() const
 {
     return sqrt(re * re + im * im);
 }

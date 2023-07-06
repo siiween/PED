@@ -29,27 +29,27 @@ public:
     TComplejo &operator=(const TComplejo &other);
 
     // SOBRECARGA DE OPERADORES ARITMÉTICOS;
-    TComplejo operator+(const TComplejo &tcom);
-    TComplejo operator-(const TComplejo &tcom);
-    TComplejo operator*(const TComplejo &tcom);
-    TComplejo operator+(double real);
-    TComplejo operator-(double real);
-    TComplejo operator*(double real);
+    TComplejo operator+(const TComplejo &tcom) const;
+    TComplejo operator-(const TComplejo &tcom) const;
+    TComplejo operator*(const TComplejo &tcom) const;
+    TComplejo operator+(double real) const;
+    TComplejo operator-(double real) const;
+    TComplejo operator*(double real) const;
 
     // OTROS OPERADORES
     bool operator==(const TComplejo &tcom) const; // IGUALDAD de números complejos
-    bool operator!=(const TComplejo &tcom);       // DESIGUALDAD de números complejos
+    bool operator!=(const TComplejo &tcom) const;       // DESIGUALDAD de números complejos
     bool operator<(const TComplejo &complejo) const;
     bool operator>(const TComplejo &complejo) const;
 
-    double Re(); // Devuelve PARTE REAL
-    double Im(); // Devuelve PARTE IMAGINARIA
+    double Re() const; // Devuelve PARTE REAL
+    double Im() const; // Devuelve PARTE IMAGINARIA
 
     void Re(double real); // Modifica PARTE REAL
     void Im(double imag); // Modifica PARTE IMAGINARIA
 
-    double Arg(); // Calcula el Argumento (en Radianes)
-    double Mod(); // Calcula el Módulo
+    double Arg() const; // Calcula el Argumento (en Radianes)
+    double Mod() const; // Calcula el Módulo
 
     // Sobrecarga del operador SALIDA
     friend std::ostream &operator<<(std::ostream &os, const TComplejo &complejo);
