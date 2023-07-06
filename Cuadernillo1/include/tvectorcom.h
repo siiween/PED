@@ -15,14 +15,14 @@ public:
     // Constructores
     TVectorCom();
     TVectorCom(int);
-    TVectorCom(TVectorCom&);
+    TVectorCom(const TVectorCom&);
 
     // Destructor
     ~TVectorCom();
 
     // Sobrecarga de operadores
     TVectorCom& operator=(TVectorCom&);
-    bool operator==(TVectorCom&);
+    bool operator==(const TVectorCom&);
     bool operator!=(TVectorCom&);
     TComplejo& operator[](int);
     TComplejo operator[](int) const;
@@ -35,7 +35,7 @@ public:
     bool Redimensionar(int);
 
     // Funciones amigas
-    friend ostream& operator<<(ostream&, TVectorCom&);
+    friend ostream& operator<<(ostream&,const TVectorCom&);
 };
 
 #endif

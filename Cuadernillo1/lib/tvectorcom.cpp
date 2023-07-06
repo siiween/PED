@@ -22,7 +22,7 @@ TVectorCom::TVectorCom(int size) {
 }
 
 // Constructor de copia
-TVectorCom::TVectorCom(TVectorCom& v) {
+TVectorCom::TVectorCom(const TVectorCom& v) {
     tamano = v.tamano;
     c = new TComplejo[tamano];
 
@@ -55,7 +55,7 @@ TVectorCom& TVectorCom::operator=(TVectorCom& v) {
 }
 
 // Sobrecarga del operador de igualdad
-bool TVectorCom::operator==(TVectorCom& v) {
+bool TVectorCom::operator==(const TVectorCom& v) {
     if (tamano != v.tamano)
         return false;
 
@@ -162,7 +162,7 @@ bool TVectorCom::Redimensionar(int size) {
 }
 
 // Sobrecarga del operador de salida
-ostream& operator<<(ostream& output, TVectorCom& v) {
+ostream& operator<<(ostream& output,const TVectorCom& v) {
     output << "[";
 
     for (int i = 1; i <= v.tamano; i++) {

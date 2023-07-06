@@ -1,27 +1,38 @@
-/* Prueba:
-      - Función Longitud() de una TListaCom
-      - Función Buscar(TComplejo) en una TListaCom
-*/
-
 #include <iostream>
-#include "tlistacom.h"
 
 using namespace std;
+
+#include "tvectorcom.h"
 
 int
 main(void)
 {
-  TComplejo a(-3, -3), b;
-  TListaCom l1;
-  
-  for (int i=0; i<10; i++) {
-         a = a + double(i);
-         l1.InsCabeza(a);
-  }
-  cout<<l1.Longitud()<<endl;
-  if (l1.Buscar(a)) cout<<"Encontrado c"<<endl;
-  else cout<<"No encontrado c"<<endl;
-  if (l1.Buscar(b)) cout<<"Encontrado b"<<endl;
-  else cout<<"No encontrado c"<<endl;
+  TVectorCom a, b(1), c(5);
+  TVectorCom a1(a), b1(b), c1(c);
+
+  cout << a.Tamano() << endl;
+  cout << b.Tamano() << endl;
+  cout << c.Tamano() << endl;
+  cout << a1.Tamano() << endl;
+  cout << b1.Tamano() << endl;
+  cout << c1.Tamano() << endl;
+
+  a.~TVectorCom();
+  b.~TVectorCom();
+  c.~TVectorCom();
+  a1.~TVectorCom();
+  b1.~TVectorCom();
+  c1.~TVectorCom();
+
+  cout << a.Tamano() << endl;
+  cout << b.Tamano() << endl;
+  cout << c.Tamano() << endl;
+  cout << a1.Tamano() << endl;
+  cout << b1.Tamano() << endl;
+  cout << c1.Tamano() << endl;
+
   return 0;
+
 }
+
+
