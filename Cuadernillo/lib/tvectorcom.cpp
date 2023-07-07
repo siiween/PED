@@ -2,21 +2,21 @@
 
 TVectorCom::TVectorCom()
 {
-    c = NULL;
-    tamano = 0;
+    this->c = NULL;
+    this->tamano = 0;
 }
 
-TVectorCom::TVectorCom(int size)
+TVectorCom::TVectorCom(int tam)
 {
-    if (size <= 0)
+    if (tam <= 0)
     {
         c = NULL;
         tamano = 0;
     }
     else
     {
-        c = new TComplejo[size];
-        tamano = size;
+        c = new TComplejo[tam];
+        tamano = tam;
     }
 }
 

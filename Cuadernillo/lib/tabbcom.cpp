@@ -108,61 +108,64 @@ bool TABBCom::Borrar(TComplejo &com)
     {
         return false;
     }
-    else if (com == nodo->item)
+    else
     {
-        if (nodo->iz.EsVacio() && nodo->de.EsVacio())
+        if (com == nodo->item)
         {
-            delete nodo;
-            nodo = nullptr;
-        }
-        else if (nodo->iz.EsVacio())
-        {
-            TNodoABB *aux = nodo;
-            nodo = nodo->de.nodo;
-            aux->de.nodo = nullptr;
-            delete aux;
-        }
-        else if (nodo->de.EsVacio())
-        {
-            TNodoABB *aux = nodo;
-            nodo = nodo->iz.nodo;
-            aux->iz.nodo = nullptr;
-            delete aux;
-        }
-        else
-        {
-            TNodoABB *aux = nodo->iz.nodo;
-            if (aux->de.EsVacio())
+            if (nodo->iz.EsVacio() && nodo->de.EsVacio())
             {
-                nodo->item = aux->item;
-                nodo->iz.nodo = aux->iz.nodo;
+                delete nodo;
+                nodo = nullptr;
+            }
+            else if (nodo->iz.EsVacio())
+            {
+                TNodoABB *aux = nodo;
+                nodo = nodo->de.nodo;
+                aux->de.nodo = nullptr;
+                delete aux;
+            }
+            else if (nodo->de.EsVacio())
+            {
+                TNodoABB *aux = nodo;
+                nodo = nodo->iz.nodo;
                 aux->iz.nodo = nullptr;
                 delete aux;
             }
             else
             {
-                while (!aux->de.nodo->de.EsVacio())
+                TNodoABB *aux = nodo->iz.nodo;
+                if (aux->de.EsVacio())
                 {
-                    aux = aux->de.nodo;
+                    nodo->item = aux->item;
+                    nodo->iz.nodo = aux->iz.nodo;
+                    aux->iz.nodo = nullptr;
+                    delete aux;
                 }
-                TNodoABB *aux2 = aux->de.nodo;
-                nodo->item = aux2->item;
-                aux->de.nodo = aux2->iz.nodo;
-                aux2->iz.nodo = nullptr;
-                delete aux2;
+                else
+                {
+                    while (!aux->de.nodo->de.EsVacio())
+                    {
+                        aux = aux->de.nodo;
+                    }
+                    TNodoABB *aux2 = aux->de.nodo;
+                    nodo->item = aux2->item;
+                    aux->de.nodo = aux2->iz.nodo;
+                    aux2->iz.nodo = nullptr;
+                    delete aux2;
+                }
             }
+            return true;
         }
-        return true;
-    }
-    else if (com.Mod() < nodo->item.Mod() ||
-             (com.Mod() == nodo->item.Mod() && com.Re() < nodo->item.Re()) ||
-             (com.Mod() == nodo->item.Mod() && com.Re() == nodo->item.Re() && com.Im() < nodo->item.Im()))
-    {
-        return nodo->iz.Borrar(com);
-    }
-    else
-    {
-        return nodo->de.Borrar(com);
+        else if (com.Mod() < nodo->item.Mod() ||
+                 (com.Mod() == nodo->item.Mod() && com.Re() < nodo->item.Re()) ||
+                 (com.Mod() == nodo->item.Mod() && com.Re() == nodo->item.Re() && com.Im() < nodo->item.Im()))
+        {
+            return nodo->iz.Borrar(com);
+        }
+        else
+        {
+            return nodo->de.Borrar(com);
+        }
     }
 }
 

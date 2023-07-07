@@ -1,431 +1,443 @@
 #include "tlistacom.h"
 
+/***
+ *
+ * TLISTAPOS
+ *
+ */
+
 TListaPos::TListaPos()
 {
-    pos = nullptr;
+    this->pos = nullptr;
 }
 
-TListaPos::TListaPos(const TListaPos &other)
+TListaPos::TListaPos(const TListaPos &listaPos)
 {
-    pos = other.pos;
+    this->pos = listaPos.pos;
 }
 
 TListaPos::~TListaPos() {}
 
-TListaPos &TListaPos::operator=(const TListaPos &other)
+TListaPos &TListaPos::operator=(const TListaPos &listaPos)
 {
-    if (this != &other)
+    if (this != &listaPos)
     {
-        pos = other.pos;
+        this->pos = listaPos.pos;
     }
     return *this;
 }
 
-bool TListaPos::operator==(const TListaPos &other)
+bool TListaPos::operator==(const TListaPos &listaPos)
 {
-    return pos == other.pos;
+    return this->pos == listaPos.pos;
 }
 
-bool TListaPos::operator!=(const TListaPos &other)
+bool TListaPos::operator!=(const TListaPos &listaPos)
 {
-    return pos != other.pos;
+    return this->pos != listaPos.pos;
 }
 
 TListaPos TListaPos::Anterior() const
 {
-    TListaPos anterior;
-    if (pos != nullptr)
+    TListaPos ant = nullptr;
+    if (this->pos != nullptr)
     {
-        anterior.pos = pos->ObtenerAnterior();
+        ant.pos = this->pos->ObtenerAnterior();
     }
-    return anterior;
+    return ant;
 }
 
 TListaPos TListaPos::Siguiente() const
 {
-    TListaPos siguiente;
-    if (pos != nullptr)
+    TListaPos sig = nullptr;
+    if (this->pos != nullptr)
     {
-        siguiente.pos = pos->ObtenerSiguiente();
+        sig.pos = this->pos->ObtenerSiguiente();
     }
-    return siguiente;
+    return sig;
 }
 
 bool TListaPos::EsVacia() const
 {
-    return pos == nullptr;
+    return this->pos == nullptr;
 }
 
-ostream &operator<<(ostream &os, const TListaPos &p)
+ostream &operator<<(ostream &salida, const TListaPos &listaPos)
 {
-    if (p.pos != nullptr)
+    if (listaPos.pos != nullptr)
     {
-        os << p.pos->ObtenerE();
+        salida << listaPos.pos->ObtenerE();
     }
-    return os;
+    return salida;
 }
 
-// Implementación de TListaNodo
+/***
+ *
+ * TLISTANODO
+ *
+ */
 
 TListaNodo::TListaNodo()
 {
-    anterior = nullptr;
-    siguiente = nullptr;
+    this->anterior = nullptr;
+    this->siguiente = nullptr;
 }
 
-TListaNodo::TListaNodo(const TListaNodo &other)
+TListaNodo::TListaNodo(const TListaNodo &listaNodo)
 {
-    e = other.e;
-    anterior = other.anterior;
-    siguiente = other.siguiente;
+    this->e = listaNodo.e;
+    this->anterior = listaNodo.anterior;
+    this->siguiente = listaNodo.siguiente;
 }
 
 TListaNodo::~TListaNodo() {}
 
-TListaNodo &TListaNodo::operator=(const TListaNodo &other)
+TListaNodo &TListaNodo::operator=(const TListaNodo &listaNodo)
 {
-    if (this != &other)
+    if (this != &listaNodo)
     {
-        e = other.e;
-        anterior = other.anterior;
-        siguiente = other.siguiente;
+        this->e = listaNodo.e;
+        this->anterior = listaNodo.anterior;
+        this->siguiente = listaNodo.siguiente;
     }
     return *this;
 }
 
-TListaNodo *TListaNodo::ObtenerAnterior() const
-{
-    return anterior;
-}
-
 TComplejo TListaNodo::ObtenerE() const
 {
-    return e;
+    return this->e;
+}
+
+TListaNodo *TListaNodo::ObtenerAnterior() const
+{
+    return this->anterior;
 }
 
 TListaNodo *TListaNodo::ObtenerSiguiente() const
 {
-    return siguiente;
+    return this->siguiente;
 }
 
-ostream &operator<<(ostream &os, const TListaNodo &n)
+ostream &operator<<(ostream &salida, const TListaNodo &listaNodo)
 {
-    os << n.e;
-    return os;
+    salida << listaNodo.e;
+    return salida;
 }
 
-// Implementación de TListaCom
+/***
+ *
+ * TLISTACOM
+ *
+ */
 
 TListaCom::TListaCom()
 {
-    primero = nullptr;
-    ultimo = nullptr;
+    this->primero = nullptr;
+    this->ultimo = nullptr;
 }
 
-TListaCom::TListaCom(const TListaCom &other)
+TListaCom::TListaCom(const TListaCom &listaCom)
 {
-    primero = nullptr;
-    ultimo = nullptr;
+    this->primero = nullptr;
+    this->ultimo = nullptr;
 
-    TListaPos p = other.Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = listaCom.Primera();
+    while (!listaPos.EsVacia())
     {
-        InsertarD(other.Obtener(p), Ultima());
-        p = p.Siguiente();
+        InsertarD(listaCom.Obtener(listaPos), Ultima());
+        listaPos = listaPos.Siguiente();
     }
 }
 
 TListaCom::~TListaCom()
 {
-    TListaPos p = Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = Primera();
+    while (!listaPos.EsVacia())
     {
-        TListaPos aux = p;
-        p = p.Siguiente();
-        delete aux.pos;
+        TListaPos listaPosAux = listaPos;
+        listaPos = listaPos.Siguiente();
+        delete listaPosAux.pos;
     }
 }
 
-TListaCom &TListaCom::operator=(const TListaCom &other)
+TListaCom &TListaCom::operator=(const TListaCom &listaCom)
 {
-    if (this != &other)
+    if (this != &listaCom)
     {
-        // Eliminar la lista actual
-        TListaPos p = Primera();
-        while (!p.EsVacia())
+        TListaPos listaPos = Primera();
+        while (!listaPos.EsVacia())
         {
-            TListaPos aux = p;
-            p = p.Siguiente();
-            delete aux.pos;
+            TListaPos listaPosAux = listaPos;
+            listaPos = listaPos.Siguiente();
+            delete listaPosAux.pos;
         }
 
-        primero = nullptr;
-        ultimo = nullptr;
+        this->primero = nullptr;
+        this->ultimo = nullptr;
 
-        // Copiar los elementos de la otra lista
-        p = other.Primera();
-        while (!p.EsVacia())
+        listaPos = listaCom.Primera();
+        while (!listaPos.EsVacia())
         {
-            InsertarD(other.Obtener(p), Ultima());
-            p = p.Siguiente();
+            InsertarD(listaCom.Obtener(listaPos), Ultima());
+            listaPos = listaPos.Siguiente();
         }
     }
     return *this;
 }
 
-bool TListaCom::operator==(const TListaCom &other)
+bool TListaCom::operator==(const TListaCom &listaCom)
 {
-    TListaPos p1 = Primera();
-    TListaPos p2 = other.Primera();
+    TListaPos listaPos1 = Primera();
+    TListaPos listaPos2 = listaCom.Primera();
 
-    while (!p1.EsVacia() && !p2.EsVacia())
+    while (!listaPos1.EsVacia() && !listaPos2.EsVacia())
     {
-        if (Obtener(p1) != other.Obtener(p2))
+        if (Obtener(listaPos1) != listaCom.Obtener(listaPos2))
         {
             return false;
         }
-        p1 = p1.Siguiente();
-        p2 = p2.Siguiente();
+        listaPos1 = listaPos1.Siguiente();
+        listaPos2 = listaPos2.Siguiente();
     }
 
-    return p1.EsVacia() && p2.EsVacia();
+    return (listaPos1.EsVacia() && listaPos2.EsVacia());
 }
 
-bool TListaCom::operator!=(const TListaCom &other)
+bool TListaCom::operator!=(const TListaCom &listaCom)
 {
-    return !(*this == other);
+    return !(*this == listaCom);
 }
 
-TListaCom TListaCom::operator+(const TListaCom &other)
+TListaCom TListaCom::operator+(const TListaCom &listaCom)
 {
-    TListaCom lista = *this;
+    TListaCom res = *this;
 
-    TListaPos p = other.Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = listaCom.Primera();
+    while (!listaPos.EsVacia())
     {
-        lista.InsertarD(other.Obtener(p), lista.Ultima());
-        p = p.Siguiente();
+        res.InsertarD(listaCom.Obtener(listaPos), res.Ultima());
+        listaPos = listaPos.Siguiente();
     }
 
-    return lista;
+    return res;
 }
 
-TListaCom TListaCom::operator-(const TListaCom &other)
+TListaCom TListaCom::operator-(const TListaCom &listaCom)
 {
-    TListaCom lista = *this;
+    TListaCom res = *this;
 
-    TListaPos p = lista.Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = res.Primera();
+    while (!listaPos.EsVacia())
     {
-        if (other.Buscar(lista.Obtener(p)))
+        if (listaCom.Buscar(res.Obtener(listaPos)))
         {
-            lista.Borrar(p);
+            res.Borrar(listaPos);
         }
         else
         {
-            p = p.Siguiente();
+            listaPos = listaPos.Siguiente();
         }
     }
 
-    return lista;
+    return res;
 }
 
 bool TListaCom::EsVacia() const
 {
-    return primero == nullptr && ultimo == nullptr;
+    return ((this->primero == nullptr) && (this->ultimo == nullptr));
 }
 
-bool TListaCom::InsCabeza(const TComplejo &c)
+bool TListaCom::InsCabeza(const TComplejo &complejo)
 {
-    TListaNodo *nuevo = new TListaNodo;
+    TListaNodo *listaNodo = new TListaNodo;
 
-    if (nuevo == nullptr)
+    if (listaNodo == nullptr)
     {
         return false;
     }
 
-    nuevo->e = c;
-    nuevo->anterior = nullptr;
-    nuevo->siguiente = primero;
+    listaNodo->e = complejo;
+    listaNodo->anterior = nullptr;
+    listaNodo->siguiente = primero;
 
     if (EsVacia())
     {
-        ultimo = nuevo;
+        this->ultimo = listaNodo;
     }
     else
     {
-        primero->anterior = nuevo;
+        this->primero->anterior = listaNodo;
     }
 
-    primero = nuevo;
+    this->primero = listaNodo;
 
     return true;
 }
 
-bool TListaCom::InsertarI(const TComplejo &c, const TListaPos &p)
+bool TListaCom::InsertarI(const TComplejo &complejo, const TListaPos &listaPos)
 {
-    if (p.pos == nullptr)
+    if (listaPos.pos == nullptr)
     {
         return false;
     }
 
-    if (p.pos == primero)
+    if (listaPos.pos == this->primero)
     {
-        return InsCabeza(c);
+        return InsCabeza(complejo);
     }
 
-    TListaNodo *nuevo = new TListaNodo;
+    TListaNodo *listaNodo = new TListaNodo;
 
-    if (nuevo == nullptr)
+    if (listaNodo == nullptr)
     {
         return false;
     }
 
-    nuevo->e = c;
-    nuevo->anterior = p.pos->anterior;
-    nuevo->siguiente = p.pos;
+    listaNodo->e = complejo;
+    listaNodo->anterior = listaPos.pos->anterior;
+    listaNodo->siguiente = listaPos.pos;
 
-    p.pos->anterior->siguiente = nuevo;
-    p.pos->anterior = nuevo;
+    listaPos.pos->anterior->siguiente = listaNodo;
+    listaPos.pos->anterior = listaNodo;
 
     return true;
 }
 
-bool TListaCom::InsertarD(const TComplejo &c, const TListaPos &p)
+bool TListaCom::InsertarD(const TComplejo &complejo, const TListaPos &listaPos)
 {
-    if (p.pos == nullptr)
+    if (listaPos.pos == nullptr)
     {
         return false;
     }
 
-    if (p.pos == ultimo)
+    if (listaPos.pos == this->ultimo)
     {
-        TListaNodo *nuevo = new TListaNodo;
+        TListaNodo *listaNodo = new TListaNodo;
 
-        if (nuevo == nullptr)
+        if (listaNodo == nullptr)
         {
             return false;
         }
 
-        nuevo->e = c;
-        nuevo->anterior = p.pos;
-        nuevo->siguiente = nullptr;
+        listaNodo->e = complejo;
+        listaNodo->anterior = listaPos.pos;
+        listaNodo->siguiente = nullptr;
 
-        p.pos->siguiente = nuevo;
-        ultimo = nuevo;
+        listaPos.pos->siguiente = listaNodo;
+        this->ultimo = listaNodo;
 
         return true;
     }
 
-    TListaNodo *nuevo = new TListaNodo;
+    TListaNodo *listaNodo = new TListaNodo;
 
-    if (nuevo == nullptr)
+    if (listaNodo == nullptr)
     {
         return false;
     }
 
-    nuevo->e = c;
-    nuevo->anterior = p.pos;
-    nuevo->siguiente = p.pos->siguiente;
+    listaNodo->e = complejo;
+    listaNodo->anterior = listaPos.pos;
+    listaNodo->siguiente = listaPos.pos->siguiente;
 
-    p.pos->siguiente->anterior = nuevo;
-    p.pos->siguiente = nuevo;
+    listaPos.pos->siguiente->anterior = listaNodo;
+    listaPos.pos->siguiente = listaNodo;
 
     return true;
 }
 
-bool TListaCom::Borrar(const TComplejo &c)
+bool TListaCom::Borrar(const TComplejo &complejo)
 {
-    TListaPos p = Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = Primera();
+    while (!listaPos.EsVacia())
     {
-        if (Obtener(p) == c)
+        if (Obtener(listaPos) == complejo)
         {
-            Borrar(p);
+            Borrar(listaPos);
             return true;
         }
-        p = p.Siguiente();
+        listaPos = listaPos.Siguiente();
     }
     return false;
 }
 
-bool TListaCom::BorrarTodos(const TComplejo &c)
+bool TListaCom::BorrarTodos(const TComplejo &complejo)
 {
     bool borrado = false;
-    TListaPos p = Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = Primera();
+    while (!listaPos.EsVacia())
     {
-        if (Obtener(p) == c)
+        if (Obtener(listaPos) == complejo)
         {
-            Borrar(p);
+            Borrar(listaPos);
             borrado = true;
         }
         else
         {
-            p = p.Siguiente();
+            listaPos = listaPos.Siguiente();
         }
     }
     return borrado;
 }
 
-bool TListaCom::Borrar(const TListaPos &p)
+bool TListaCom::Borrar(const TListaPos &listaPos)
 {
-    if (p.pos == nullptr)
+    if (listaPos.pos == nullptr)
     {
         return false;
     }
 
-    if (p.pos == primero)
+    if (listaPos.pos == this->primero)
     {
-        if (primero == ultimo)
+        if (this->primero == this->ultimo)
         {
-            primero = nullptr;
-            ultimo = nullptr;
+            this->primero = nullptr;
+            this->ultimo = nullptr;
         }
         else
         {
-            primero = primero->siguiente;
-            primero->anterior = nullptr;
+            this->primero = this->primero->siguiente;
+            this->primero->anterior = nullptr;
         }
-        delete p.pos;
+        delete listaPos.pos;
     }
-    else if (p.pos == ultimo)
+    else if (listaPos.pos == this->ultimo)
     {
-        ultimo = ultimo->anterior;
-        ultimo->siguiente = nullptr;
-        delete p.pos;
+        this->ultimo = this->ultimo->anterior;
+        this->ultimo->siguiente = nullptr;
+        delete listaPos.pos;
     }
     else
     {
-        p.pos->anterior->siguiente = p.pos->siguiente;
-        p.pos->siguiente->anterior = p.pos->anterior;
-        delete p.pos;
+        listaPos.pos->anterior->siguiente = listaPos.pos->siguiente;
+        listaPos.pos->siguiente->anterior = listaPos.pos->anterior;
+        delete listaPos.pos;
     }
 
     return true;
 }
 
-TComplejo TListaCom::Obtener(const TListaPos &p) const
+TComplejo TListaCom::Obtener(const TListaPos &listaPos) const
 {
-    if (p.pos == nullptr)
+    if (listaPos.pos == nullptr)
     {
-        TComplejo c;
-        return c;
+        TComplejo complejo;
+        return complejo;
     }
 
-    return p.pos->e;
+    return listaPos.pos->e;
 }
 
-bool TListaCom::Buscar(const TComplejo &c) const
+bool TListaCom::Buscar(const TComplejo &complejo) const
 {
-    TListaPos p = Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = Primera();
+    while (!listaPos.EsVacia())
     {
-        if (Obtener(p) == c)
+        if (Obtener(listaPos) == complejo)
         {
             return true;
         }
-        p = p.Siguiente();
+        listaPos = listaPos.Siguiente();
     }
     return false;
 }
@@ -433,48 +445,47 @@ bool TListaCom::Buscar(const TComplejo &c) const
 int TListaCom::Longitud() const
 {
     int longitud = 0;
-    TListaPos p = Primera();
-    while (!p.EsVacia())
+    TListaPos listaPos = Primera();
+    while (!listaPos.EsVacia())
     {
         longitud++;
-        p = p.Siguiente();
+        listaPos = listaPos.Siguiente();
     }
     return longitud;
 }
 
 TListaPos TListaCom::Primera() const
 {
-    TListaPos p;
-    p.pos = primero;
-    return p;
+    TListaPos listaPos;
+    listaPos.pos = this->primero;
+    return listaPos;
 }
 
 TListaPos TListaCom::Ultima() const
 {
-    TListaPos p;
-    p.pos = ultimo;
-    return p;
+    TListaPos listaPos;
+    listaPos.pos = this->ultimo;
+    return listaPos;
 }
 
-ostream &operator<<(ostream &os, TListaCom &l)
+ostream &operator<<(ostream &salida, TListaCom &listaCom)
 {
-    TListaPos p = l.Primera();
-    TListaPos aux;
-    os << "{";
-    while (!p.EsVacia())
+    TListaPos listaPos = listaCom.Primera();
+    salida << "{";
+    while (!listaPos.EsVacia())
     {
-        aux = p.Siguiente();
-        if (!aux.EsVacia())
+        TListaPos listaPosAux = listaPos.Siguiente();
+        if (listaPosAux.EsVacia())
         {
-            os << l.Obtener(p) << " ";
-            p = p.Siguiente();
+            salida << listaCom.Obtener(listaPos);
+            listaPos = listaPos.Siguiente();
         }
         else
         {
-            os << l.Obtener(p);
-            p = p.Siguiente();
+            salida << listaCom.Obtener(listaPos) << " ";
+            listaPos = listaPos.Siguiente();
         }
     }
-    os << "}";
-    return os;
+    salida << "}";
+    return salida;
 }
