@@ -2,8 +2,7 @@
 #define TVECTOR_H
 #include "tcomplejo.h"
 
-class TVectorCom
-{
+class TVectorCom {
 private:
     TComplejo *c;
     int tamano;

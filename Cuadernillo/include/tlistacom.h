@@ -5,8 +5,7 @@
 
 class TListaNodo;
 
-class TListaPos
-{
+class TListaPos {
     friend class TListaCom;
     friend ostream &operator<<(ostream &, const TListaPos &);
 
@@ -26,8 +25,7 @@ public:
     bool EsVacia() const;
 };
 
-class TListaNodo
-{
+class TListaNodo {
     friend class TListaCom;
     friend ostream &operator<<(ostream &, const TListaNodo &);
 
@@ -46,8 +44,7 @@ public:
     TListaNodo *ObtenerSiguiente() const;
 };
 
-class TListaCom
-{
+class TListaCom {
     friend ostream &operator<<(ostream &, TListaCom &);
 
 private:

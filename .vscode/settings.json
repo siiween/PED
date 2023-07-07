@@ -1,0 +1,4 @@
+{
+    "C_Cpp.formatting": "Visual Studio",
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 0, AccessModifierOffset: -4, UseTab: Never, BreakBeforeBraces: Attach }"
+}

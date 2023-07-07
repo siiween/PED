@@ -1,70 +1,55 @@
 #include "tvectorcom.h"
 
-TVectorCom::TVectorCom()
-{
+TVectorCom::TVectorCom() {
     this->c = NULL;
     this->tamano = 0;
 }
 
-TVectorCom::TVectorCom(int tam)
-{
-    if (tam <= 0)
-    {
+TVectorCom::TVectorCom(int tam) {
+    if (tam <= 0) {
         this->c = NULL;
         this->tamano = 0;
-    }
-    else
-    {
+    } else {
         this->c = new TComplejo[tam];
         this->tamano = tam;
     }
 }
 
-TVectorCom::TVectorCom(const TVectorCom &vector)
-{
+TVectorCom::TVectorCom(const TVectorCom &vector) {
     this->tamano = vector.tamano;
     this->c = new TComplejo[this->tamano];
 
-    for (int i = 1; i <= this->tamano; i++)
-    {
+    for (int i = 1; i <= this->tamano; i++) {
         this->c[i - 1] = vector.c[i - 1];
     }
 }
 
-TVectorCom::~TVectorCom()
-{
-    if (this->c != nullptr)
-    {
+TVectorCom::~TVectorCom() {
+    if (this->c != nullptr) {
         delete[] this->c;
         this->c = nullptr;
         tamano = 0;
     }
 }
 
-TVectorCom &TVectorCom::operator=(const TVectorCom &vector)
-{
-    if (this != &vector)
-    {
+TVectorCom &TVectorCom::operator=(const TVectorCom &vector) {
+    if (this != &vector) {
         delete[] this->c;
         this->tamano = vector.tamano;
         this->c = new TComplejo[this->tamano];
 
-        for (int i = 1; i <= this->tamano; i++)
-        {
+        for (int i = 1; i <= this->tamano; i++) {
             this->c[i - 1] = vector.c[i - 1];
         }
     }
     return *this;
 }
 
-bool TVectorCom::operator==(const TVectorCom &vector) const
-{
-
+bool TVectorCom::operator==(const TVectorCom &vector) const {
     if (this->tamano != vector.tamano)
         return false;
 
-    for (int i = 0; i <= this->tamano; i++)
-    {
+    for (int i = 0; i <= this->tamano; i++) {
         if (this->c[i] != vector.c[i])
             cout << this->c[i] << ' ' << vector.c[i] << endl;
         return false;
@@ -73,13 +58,11 @@ bool TVectorCom::operator==(const TVectorCom &vector) const
     return true;
 }
 
-bool TVectorCom::operator!=(const TVectorCom &vector) const
-{
+bool TVectorCom::operator!=(const TVectorCom &vector) const {
     return !(*this == vector);
 }
 
-TComplejo &TVectorCom::operator[](int posicion)
-{
+TComplejo &TVectorCom::operator[](int posicion) {
     static TComplejo error;
     error.Re(0);
     error.Im(0);
@@ -90,8 +73,7 @@ TComplejo &TVectorCom::operator[](int posicion)
     return this->c[posicion - 1];
 }
 
-TComplejo TVectorCom::operator[](int posicion) const
-{
+TComplejo TVectorCom::operator[](int posicion) const {
     static TComplejo error;
     error.Re(0);
     error.Im(0);
@@ -102,17 +84,14 @@ TComplejo TVectorCom::operator[](int posicion) const
     return this->c[posicion - 1];
 }
 
-int TVectorCom::Tamano() const
-{
+int TVectorCom::Tamano() const {
     return this->tamano;
 }
 
-int TVectorCom::Ocupadas() const
-{
+int TVectorCom::Ocupadas() const {
     int contador = 0;
 
-    for (int i = 1; i <= this->tamano; i++)
-    {
+    for (int i = 1; i <= this->tamano; i++) {
         if (this->c[i - 1] != TComplejo())
             contador++;
     }
@@ -120,10 +99,8 @@ int TVectorCom::Ocupadas() const
     return contador;
 }
 
-bool TVectorCom::ExisteCom(const TComplejo &complejo) const
-{
-    for (int i = 1; i <= this->tamano; i++)
-    {
+bool TVectorCom::ExisteCom(const TComplejo &complejo) const {
+    for (int i = 1; i <= this->tamano; i++) {
         if (this->c[i - 1] == complejo)
             return true;
     }
@@ -131,18 +108,14 @@ bool TVectorCom::ExisteCom(const TComplejo &complejo) const
     return false;
 }
 
-void TVectorCom::MostrarComplejos(double real) const
-{
+void TVectorCom::MostrarComplejos(double real) const {
     bool primero = true;
 
     cout << "[";
 
-    for (int i = 1; i <= this->tamano; i++)
-    {
-        if (this->c[i - 1].Re() >= real)
-        {
-            if (!primero)
-            {
+    for (int i = 1; i <= this->tamano; i++) {
+        if (this->c[i - 1].Re() >= real) {
+            if (!primero) {
                 cout << ", ";
             }
             cout << this->c[i - 1];
@@ -153,8 +126,7 @@ void TVectorCom::MostrarComplejos(double real) const
     cout << "]";
 }
 
-bool TVectorCom::Redimensionar(int tam)
-{
+bool TVectorCom::Redimensionar(int tam) {
     if (tam <= 0 || tam == this->tamano)
         return false;
 
@@ -167,8 +139,7 @@ bool TVectorCom::Redimensionar(int tam)
     else
         copiaTam = this->tamano;
 
-    for (int i = 1; i <= copiaTam; i++)
-    {
+    for (int i = 1; i <= copiaTam; i++) {
         nuevoComplejo[i - 1] = this->c[i - 1];
     }
 
@@ -179,12 +150,10 @@ bool TVectorCom::Redimensionar(int tam)
     return true;
 }
 
-ostream &operator<<(ostream &salida, const TVectorCom &vector)
-{
+ostream &operator<<(ostream &salida, const TVectorCom &vector) {
     salida << "[";
 
-    for (int i = 1; i <= vector.tamano; i++)
-    {
+    for (int i = 1; i <= vector.tamano; i++) {
         salida << "(" << i << ") " << vector.c[i - 1];
         if (i < vector.tamano)
             salida << ", ";

@@ -4,8 +4,7 @@
 #include <iostream>
 using namespace std;
 
-class TComplejo
-{
+class TComplejo {
 private:
     double re;
     double im;

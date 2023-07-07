@@ -1,12 +1,12 @@
 #ifndef TAVL_H
 #define TAVL_H
 #include <iostream>
+
 #include "tcomplejo.h"
 #include "tvectorcom.h"
 
 class TNodoAVL;
-class TAVLCom
-{
+class TAVLCom {
     friend class TNodoAVL;
 
 private:
@@ -46,8 +46,7 @@ public:
     friend ostream &operator<<(ostream &, const TAVLCom &);
 };
 
-class TNodoAVL
-{
+class TNodoAVL {
     friend class TAVLCom;
 
 private:

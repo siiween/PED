@@ -1,15 +1,15 @@
 #ifndef TABB_H
 #define TABB_H
 
+#include <iostream>
+#include <queue>
+
 #include "tcomplejo.h"
 #include "tvectorcom.h"
-#include <queue>
-#include <iostream>
 
 class TNodoABB;
 
-class TABBCom
-{
+class TABBCom {
 private:
     TNodoABB *nodo;
 
@@ -40,8 +40,7 @@ public:
     friend ostream &operator<<(ostream &, const TABBCom &);
 };
 
-class TNodoABB
-{
+class TNodoABB {
     friend class TABBCom;
 
 private:
