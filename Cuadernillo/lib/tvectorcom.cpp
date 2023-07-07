@@ -174,7 +174,7 @@ bool TVectorCom::Redimensionar(int tam)
 
     delete[] this->c;
     this->c = nuevoComplejo;
-    this->tamano = size;
+    this->tamano = tam;
 
     return true;
 }

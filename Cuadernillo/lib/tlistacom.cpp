@@ -39,7 +39,7 @@ bool TListaPos::operator!=(const TListaPos &listaPos)
 
 TListaPos TListaPos::Anterior() const
 {
-    TListaPos ant = nullptr;
+    TListaPos ant;
     if (this->pos != nullptr)
     {
         ant.pos = this->pos->ObtenerAnterior();
@@ -49,7 +49,7 @@ TListaPos TListaPos::Anterior() const
 
 TListaPos TListaPos::Siguiente() const
 {
-    TListaPos sig = nullptr;
+    TListaPos sig;
     if (this->pos != nullptr)
     {
         sig.pos = this->pos->ObtenerSiguiente();
