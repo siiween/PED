@@ -1,25 +1,17 @@
 #include "tavlcom.h"
 #include <queue>
 
-TNodoAVL::TNodoAVL()
-{
-    fe = 0;
-}
+TNodoAVL::TNodoAVL() : fe(0) {}
 
-TNodoAVL::TNodoAVL(const TComplejo &tc) : item(tc)
-{
-    fe = 0;
-}
-// Constructor de copia
-TNodoAVL::TNodoAVL(const TNodoAVL &nodo) : item(nodo.item), iz(nodo.iz), de(nodo.de), fe(nodo.fe)
-{
-}
-// Destructor
+TNodoAVL::TNodoAVL(const TComplejo &tc) : item(tc), fe(0) {}
+
+TNodoAVL::TNodoAVL(const TNodoAVL &nodo) : item(nodo.item), iz(nodo.iz), de(nodo.de), fe(nodo.fe) {}
+
 TNodoAVL::~TNodoAVL()
 {
-    // composicion
+    // No se requiere código adicional
 }
-// Sobrecarga del operador asignación
+
 TNodoAVL &TNodoAVL::operator=(const TNodoAVL &nodo)
 {
     item = nodo.item;
@@ -29,56 +21,38 @@ TNodoAVL &TNodoAVL::operator=(const TNodoAVL &nodo)
     return *this;
 }
 
-// TAVLCom//
+TAVLCom::TAVLCom() : raiz(nullptr) {}
 
-TAVLCom::TAVLCom()
+TAVLCom::TAVLCom(const TAVLCom &avl) : raiz(nullptr)
 {
-    raiz = NULL;
-}
-
-// Constructor de copia
-TAVLCom::TAVLCom(const TAVLCom &avl)
-{
-    if (avl.raiz != NULL)
+    if (avl.raiz != nullptr)
     {
         raiz = new TNodoAVL(*(avl.raiz));
     }
-    else
-    {
-        raiz = NULL;
-    }
 }
 
-// Destructor
 TAVLCom::~TAVLCom()
 {
-    if (raiz != NULL)
-    {
-        delete raiz;
-        raiz = NULL;
-    }
+    delete raiz;
+    raiz = nullptr;
 }
 
-// Sobrecarga del operador asignación
 TAVLCom &TAVLCom::operator=(const TAVLCom &avl)
 {
     if (this != &avl)
     {
-        this->~TAVLCom();
-        if (avl.raiz != NULL)
+        delete raiz;
+        raiz = nullptr;
+
+        if (avl.raiz != nullptr)
         {
             raiz = new TNodoAVL();
-            *raiz = (*(avl.raiz));
-        }
-        else
-        {
-            raiz = NULL;
+            *raiz = *(avl.raiz);
         }
     }
     return *this;
 }
 
-// Sobrecarga del operador igualdad
 bool TAVLCom::operator==(const TAVLCom &avl) const
 {
     TVectorCom arbol1 = Inorden();
@@ -86,51 +60,44 @@ bool TAVLCom::operator==(const TAVLCom &avl) const
     return arbol1 == arbol2;
 }
 
-// Sobrecarga del operador desigualdad
 bool TAVLCom::operator!=(const TAVLCom &avl) const
 {
     return !(*this == avl);
 }
 
-// Devuelve TRUE si el árbol está vacío, FALSE en caso contrario
 bool TAVLCom::EsVacio() const
 {
-    return raiz == NULL;
+    return raiz == nullptr;
 }
 
-// Inserta el elemento TComplejo en el árbol
 bool TAVLCom::Insertar(const TComplejo &tc)
 {
     bool insertado = false, i;
-    insertado = Insertar(tc, i); // crece no se usa para nada.
+    insertado = Insertar(tc, i);
     return insertado;
 }
 
 bool TAVLCom::Insertar(const TComplejo &tc, bool &i)
-{ // i es el booleano que dice si crece
+{
     bool insertado = false, izq = false, der = false;
 
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         if (tc < raiz->item)
         {
             insertado = raiz->iz.Insertar(tc, izq);
             der = false;
         }
+        else if (tc > raiz->item)
+        {
+            insertado = raiz->de.Insertar(tc, der);
+            izq = false;
+        }
         else
         {
-            if (tc > raiz->item)
-            {
-                insertado = raiz->de.Insertar(tc, der);
-                izq = false;
-            }
-            else
-            {
-                // izq = der = false;
-                // insertado = false;
-                i = false;
-            }
+            i = false;
         }
+
         if (izq)
         {
             raiz->fe--;
@@ -154,6 +121,7 @@ bool TAVLCom::Insertar(const TComplejo &tc, bool &i)
                     i = false;
                     break;
                 }
+                break;
             }
         }
         if (der)
@@ -179,6 +147,7 @@ bool TAVLCom::Insertar(const TComplejo &tc, bool &i)
                     i = false;
                     break;
                 }
+                break;
             }
         }
     }
@@ -208,6 +177,7 @@ void TAVLCom::RotarDerecha()
         raiz->iz.raiz->fe = 1;
     }
 }
+
 void TAVLCom::RotarIzquierda()
 {
     TNodoAVL *avl = raiz;
@@ -226,9 +196,12 @@ void TAVLCom::RotarIzquierda()
         raiz->de.raiz->fe = -1;
     }
 }
+
 void TAVLCom::RotarDobleDerecha()
 {
-    TNodoAVL *avl = raiz, *izq, *der;
+    TNodoAVL *avl = raiz;
+    TNodoAVL *izq;
+    TNodoAVL *der;
 
     raiz = raiz->de.raiz->iz.raiz;
     izq = raiz->iz.raiz;
@@ -257,9 +230,12 @@ void TAVLCom::RotarDobleDerecha()
         raiz->de.raiz->fe = 0;
     }
 }
+
 void TAVLCom::RotarDobleIzquierda()
 {
-    TNodoAVL *avl = raiz, *izq, *der;
+    TNodoAVL *avl = raiz;
+    TNodoAVL *izq;
+    TNodoAVL *der;
 
     raiz = raiz->iz.raiz->de.raiz;
     izq = raiz->iz.raiz;
@@ -292,22 +268,19 @@ void TAVLCom::RotarDobleIzquierda()
 bool TAVLCom::Buscar(const TComplejo &tc) const
 {
     bool encontrado = false;
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         if (tc == raiz->item)
         {
             encontrado = true;
         }
+        else if (tc < raiz->item)
+        {
+            encontrado = raiz->iz.Buscar(tc);
+        }
         else
         {
-            if (tc < raiz->item)
-            {
-                encontrado = raiz->iz.Buscar(tc);
-            }
-            else
-            {
-                encontrado = raiz->de.Buscar(tc);
-            }
+            encontrado = raiz->de.Buscar(tc);
         }
     }
     return encontrado;
@@ -325,7 +298,7 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
     bool borrado = false, izq = false, der = false;
     TNodoAVL *avl;
 
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         if (tc < raiz->item)
         {
@@ -337,45 +310,40 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
         }
         else
         {
-            if (raiz->iz.raiz == NULL && raiz->de.raiz == NULL)
+            if (raiz->iz.raiz == nullptr && raiz->de.raiz == nullptr)
             {
                 i = true;
                 delete raiz;
-                raiz = NULL;
+                raiz = nullptr;
+                borrado = true;
+            }
+            else if (raiz->iz.raiz == nullptr && raiz->de.raiz != nullptr)
+            {
+                avl = raiz;
+                raiz = raiz->de.raiz;
+                avl->de.raiz = nullptr;
+                delete avl;
+                i = true;
+                borrado = true;
+            }
+            else if (raiz->iz.raiz != nullptr && raiz->de.raiz == nullptr)
+            {
+                avl = raiz;
+                raiz = raiz->iz.raiz;
+                avl->iz.raiz = nullptr;
+                delete avl;
+                i = true;
                 borrado = true;
             }
             else
             {
-                if (raiz->iz.raiz == NULL && raiz->de.raiz != NULL)
-                {
-                    avl = raiz;
-                    raiz = raiz->de.raiz;
-                    avl->de.raiz = NULL;
-                    delete avl;
-                    i = true;
-                    borrado = true;
-                }
-                else
-                {
-                    if (raiz->iz.raiz != NULL && raiz->de.raiz == NULL)
-                    {
-                        avl = raiz;
-                        raiz = raiz->iz.raiz;
-                        avl->iz.raiz = NULL;
-                        delete avl;
-                        i = true;
-                        borrado = true;
-                    }
-                    else
-                    {
-                        TComplejo mayor = raiz->iz.BuscarNodo();
-                        raiz->item = mayor;
-                        raiz->iz.Borrar(mayor, izq);
-                        borrado = true;
-                    }
-                }
+                TComplejo mayor = raiz->iz.BuscarNodo();
+                raiz->item = mayor;
+                raiz->iz.Borrar(mayor, izq);
+                borrado = true;
             }
         }
+
         if (izq)
         {
             raiz->fe++;
@@ -403,9 +371,9 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
                     i = true;
                     break;
                 }
+                break;
             }
         }
-
         else if (der)
         {
             raiz->fe--;
@@ -433,6 +401,7 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
                     i = true;
                     break;
                 }
+                break;
             }
         }
     }
@@ -442,18 +411,11 @@ bool TAVLCom::Borrar(const TComplejo &tc, bool &i)
 int TAVLCom::Altura() const
 {
     int altura, rama_izq, rama_der;
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         rama_izq = raiz->iz.Altura();
         rama_der = raiz->de.Altura();
-        if (rama_izq < rama_der)
-        {
-            altura = 1 + rama_der;
-        }
-        else
-        {
-            altura = 1 + rama_izq;
-        }
+        altura = 1 + std::max(rama_izq, rama_der);
     }
     else
     {
@@ -465,7 +427,7 @@ int TAVLCom::Altura() const
 TComplejo TAVLCom::Raiz() const
 {
     TComplejo tc;
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         tc = raiz->item;
     }
@@ -475,7 +437,7 @@ TComplejo TAVLCom::Raiz() const
 int TAVLCom::Nodos() const
 {
     int nodos = 0;
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         nodos = 1 + raiz->iz.Nodos() + raiz->de.Nodos();
     }
@@ -485,9 +447,9 @@ int TAVLCom::Nodos() const
 int TAVLCom::NodosHoja() const
 {
     int nodos_hoja = 0;
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
-        if (raiz->iz.raiz == NULL && raiz->de.raiz == NULL)
+        if (raiz->iz.raiz == nullptr && raiz->de.raiz == nullptr)
         {
             nodos_hoja = 1;
         }
@@ -501,7 +463,7 @@ int TAVLCom::NodosHoja() const
 
 void TAVLCom::InordenAux(TVectorCom &tv, int &pos) const
 {
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         raiz->iz.InordenAux(tv, pos);
         tv[pos] = raiz->item;
@@ -512,7 +474,7 @@ void TAVLCom::InordenAux(TVectorCom &tv, int &pos) const
 
 void TAVLCom::PreordenAux(TVectorCom &tv, int &pos) const
 {
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         tv[pos] = raiz->item;
         pos++;
@@ -523,7 +485,7 @@ void TAVLCom::PreordenAux(TVectorCom &tv, int &pos) const
 
 void TAVLCom::PostordenAux(TVectorCom &tv, int &pos) const
 {
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
         raiz->iz.PostordenAux(tv, pos);
         raiz->de.PostordenAux(tv, pos);
@@ -535,15 +497,15 @@ void TAVLCom::PostordenAux(TVectorCom &tv, int &pos) const
 TComplejo TAVLCom::BuscarNodo()
 {
     TComplejo mayor;
-    if (raiz != NULL)
+    if (raiz != nullptr)
     {
-        if (raiz->de.raiz != NULL)
+        if (raiz->de.raiz == nullptr)
         {
-            mayor = raiz->de.BuscarNodo();
+            mayor = raiz->item;
         }
         else
         {
-            mayor = raiz->item;
+            mayor = raiz->de.BuscarNodo();
         }
     }
     return mayor;
@@ -551,60 +513,51 @@ TComplejo TAVLCom::BuscarNodo()
 
 TVectorCom TAVLCom::Inorden() const
 {
-    TVectorCom tv(Nodos());
     int pos = 1;
-    InordenAux(tv, pos);
-    return tv;
+    TVectorCom vector(Nodos());
+    InordenAux(vector, pos);
+    return vector;
 }
 
 TVectorCom TAVLCom::Preorden() const
 {
-    TVectorCom tv(Nodos());
     int pos = 1;
-    PreordenAux(tv, pos);
-    return tv;
+    TVectorCom vector(Nodos());
+    PreordenAux(vector, pos);
+    return vector;
 }
 
 TVectorCom TAVLCom::Postorden() const
 {
-    TVectorCom tv(Nodos());
     int pos = 1;
-    PostordenAux(tv, pos);
-    return tv;
+    TVectorCom vector(Nodos());
+    PostordenAux(vector, pos);
+    return vector;
 }
 
 TVectorCom TAVLCom::Niveles() const
 {
-    queue<TNodoAVL *> cola;
-    TNodoAVL *tnodo;
-    TVectorCom tv(Nodos());
-
+    TVectorCom vector(Nodos());
+    int pos = 1;
+    std::queue<TNodoAVL *> cola;
     cola.push(raiz);
-    int i = 0;
+
     while (!cola.empty())
     {
-        tnodo = cola.front();
+        TNodoAVL *nodo = cola.front();
         cola.pop();
-        if (tnodo != NULL)
+        vector[pos] = nodo->item;
+        pos++;
+
+        if (nodo->iz.raiz != nullptr)
         {
-            tv[i] = tnodo->item;
-            i++;
-            if (!tnodo->iz.EsVacio())
-            {
-                cola.push(tnodo->iz.raiz);
-            }
-            if (!tnodo->de.EsVacio())
-            {
-                cola.push(tnodo->de.raiz);
-            }
+            cola.push(nodo->iz.raiz);
+        }
+        if (nodo->de.raiz != nullptr)
+        {
+            cola.push(nodo->de.raiz);
         }
     }
-    return tv;
-}
 
-ostream &operator<<(ostream &os, const TAVLCom &avl)
-{
-    TVectorCom tv = avl.Niveles();
-    os << tv;
-    return os;
+    return vector;
 }
